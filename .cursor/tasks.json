@@ -1,0 +1,46 @@
+{
+  "version": "1",
+  "tasks": [
+    {
+      "name": "Bootstrap FSI Env",
+      "description": "Ensure local dev runs for both apps with Tailwind and Firebase auth.",
+      "steps": [
+        "Verify pnpm workspace and turbo pipeline exist.",
+        "Check apps/admin and apps/consumer can start and import from @fsi/ui and @config/*.",
+        "Ensure Tailwind preset is consumed in both apps.",
+        "Confirm sign-in flow reaches Google popup and AuthGate routing works."
+      ],
+      "acceptance": [
+        "pnpm dev runs admin:3001 and consumer:3000",
+        "Auth pages render; login writes users/{uid}",
+        "Admin allowlist denies non-admin on /admin/dashboard"
+      ]
+    },
+    {
+      "name": "Add Middleware Redirects",
+      "description": "Add optional middleware to redirect /dashboard to /auth when not signed-in.",
+      "steps": [
+        "Create middleware stubs in both apps.",
+        "Use lightweight client-side fallback in case of false negatives."
+      ],
+      "files": ["apps/admin/middleware.ts", "apps/consumer/middleware.ts"]
+    },
+    {
+      "name": "Admin Allowlist Settings UI",
+      "description": "Add read-only UI to show which emails are allowlisted.",
+      "steps": [
+        "Add a section in admin dashboard to render NEXT_PUBLIC_ADMIN_ALLOWLIST parsed list.",
+        "Do not store in DB; read from env."
+      ]
+    },
+    {
+      "name": "Firestore Emulator Support (Local)",
+      "description": "Add instructions + toggles for emulator usage in README.",
+      "steps": [
+        "Update README with Firebase emulator setup.",
+        "No code changes required; optional env flag like NEXT_PUBLIC_USE_EMULATORS"
+      ],
+      "files": ["README.md"]
+    }
+  ]
+}

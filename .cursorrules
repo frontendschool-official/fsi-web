@@ -1,0 +1,61 @@
+# Cursor Rules for fsi-web
+
+## Project Overview
+- Monorepo name: **fsi-web**
+- Apps: **apps/admin**, **apps/consumer** (Next.js 14 App Router)
+- Shared packages: **packages/config**, **packages/ui**, **packages/eslint-config**, **packages/tsconfig**
+- Styling: TailwindCSS in both apps + shared preset in `@fsi/ui`
+- Auth & DB: Firebase Web SDK v10 (Google Sign-In, Firestore)
+- Package manager: **pnpm** (fallback: npm/yarn)
+- Task runner: **Turborepo**
+
+## Hard Constraints (do not violate)
+1) Keep Firebase **client-only** (no Admin SDK or private keys).
+2) Do not introduce server secrets; only `NEXT_PUBLIC_*` values.
+3) Shared config must live in `packages/config` and be imported via `@config/*`.
+4) Shared UI must live in `packages/ui` and be imported via `@fsi/ui`.
+5) Admin-only surfaces must check `isAdmin(email)` (allowlist env).
+6) Keep code **TypeScript strict** and pass `pnpm lint && pnpm typecheck && pnpm build`.
+
+## File/Module Boundaries
+- `packages/config`: `env.ts`, `firebase.ts`, `auth.ts`, `db.ts` are the **single sources of truth** for env, Firebase init, auth helpers, Firestore helpers.
+- `packages/ui`: Presentational components only; may call `useUser()`/`isAdmin()` for gating via `AuthGate`.
+- Apps **must not** re-initialize Firebase or re-parse env.
+
+## Code Style & Tooling
+- ESLint: extend `next/core-web-vitals`, `eslint:recommended`, `@typescript-eslint/recommended`, `prettier`.
+- TSConfig: use `packages/tsconfig/base.json` with strict options.
+- Pre-commit: run `lint-staged` with eslint+prettier.
+- CI: Node 20, `pnpm i`, run `lint`, `typecheck`, `build`.
+
+## UI/UX Conventions
+- Use Tailwind utility classes; keep components minimal and reusable.
+- No third-party UI kits without explicit approval.
+
+## Auth Flow (v1)
+- `signInWithPopup(GoogleAuthProvider)`.
+- On login: `ensureUserDocument(user)`.
+- `AuthGate`:
+  - If `adminOnly`, redirect to `/auth` when not signed in OR show “Access Denied” for non-allowlisted users.
+  - Else, redirect unauthenticated to `/auth`.
+
+## Acceptance Checklist (Cursor must keep green)
+- `pnpm i` at root installs.
+- `pnpm dev` runs consumer:3000 + admin:3001.
+- `/auth` works; first sign-in creates `users/{uid}`.
+- Admin allowlist blocks non-admin on `/admin/dashboard`.
+- `pnpm lint && pnpm typecheck && pnpm build` succeed.
+
+## Dependency Policy
+- Allowed: next@14, react@18, firebase@^10, zod, tailwindcss, autoprefixer, eslint, prettier, husky, lint-staged.
+- Ask before adding anything else.
+
+## Commits
+- Conventional commits (e.g., `feat(admin): add companies placeholder cards`)
+- Keep PRs small and focused.
+
+## Do / Don’t
+- ✅ Reuse helpers from `@config/*`
+- ✅ Put new shared UI in `packages/ui`
+- ❌ Don’t duplicate env parsing or Firebase init
+- ❌ Don’t add server-only keys

@@ -1,0 +1,12 @@
+{
+  "name": "@fsi/ui",
+  "version": "0.0.1",
+  "main": "index.ts",
+  "type": "module",
+  "dependencies": {
+    "react": "^18.2.0"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0"
+  }
+}
