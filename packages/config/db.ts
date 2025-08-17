@@ -1,7 +1,15 @@
-import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
+import {
+  doc,
+  getDoc,
+  setDoc,
+  serverTimestamp,
+  updateDoc,
+} from 'firebase/firestore';
 import { User } from 'firebase/auth';
 import { db } from './firebase';
 import { getAdminAllowlist } from './env';
+
+export type Theme = 'light' | 'dark';
 
 /**
  * Determine whether the given email belongs to the admin allowlist.  Emails
@@ -35,5 +43,48 @@ export async function ensureUserDocument(user: User | null): Promise<void> {
     photoURL,
     createdAt: serverTimestamp(),
     role: email && isAdmin(email) ? 'admin' : 'user',
+    theme: 'light', // Default theme
   });
+}
+
+/**
+ * Get the user's theme preference from Firebase
+ */
+export async function getUserTheme(user: User | null): Promise<Theme> {
+  if (!user) return 'light';
+
+  try {
+    const ref = doc(db(), 'users', user.uid);
+    const docSnap = await getDoc(ref);
+
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      return (data.theme as Theme) || 'light';
+    }
+
+    return 'light';
+  } catch (error) {
+    console.error('Error getting user theme:', error);
+    return 'light';
+  }
+}
+
+/**
+ * Update the user's theme preference in Firebase
+ */
+export async function updateUserTheme(
+  user: User | null,
+  theme: Theme
+): Promise<void> {
+  if (!user) return;
+
+  try {
+    const ref = doc(db(), 'users', user.uid);
+    await updateDoc(ref, {
+      theme,
+      updatedAt: serverTimestamp(),
+    });
+  } catch (error) {
+    console.error('Error updating user theme:', error);
+  }
 }

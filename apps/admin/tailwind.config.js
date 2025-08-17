@@ -6,6 +6,7 @@ module.exports = {
     join(__dirname, '../../packages/ui/**/*.{ts,tsx}'),
   ],
   presets: [require('../../packages/ui/tailwind-preset')],
+  darkMode: 'class',
   theme: {
     extend: {},
   },

@@ -12,7 +12,7 @@ const firebaseConfig: FirebaseOptions = {
   appId: env.NEXT_PUBLIC_FIREBASE_APP_ID,
   measurementId: env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
-
+console.log(firebaseConfig, 'firebaseConfig');
 /**
  * Ensure that the Firebase app is initialised exactly once.  Firebase
  * enforces a singleton pattern by throwing if you attempt to initialise
