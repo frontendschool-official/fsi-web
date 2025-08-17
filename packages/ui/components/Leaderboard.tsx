@@ -37,25 +37,25 @@ export function Leaderboard({
     switch (rank) {
       case 1:
         return (
-          <div className='w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center text-white font-bold'>
+          <div className='w-6 h-6 sm:w-8 sm:h-8 bg-yellow-500 rounded-full flex items-center justify-center text-white font-bold text-sm sm:text-base'>
             🥇
           </div>
         );
       case 2:
         return (
-          <div className='w-8 h-8 bg-gray-400 rounded-full flex items-center justify-center text-white font-bold'>
+          <div className='w-6 h-6 sm:w-8 sm:h-8 bg-gray-400 rounded-full flex items-center justify-center text-white font-bold text-sm sm:text-base'>
             🥈
           </div>
         );
       case 3:
         return (
-          <div className='w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center text-white font-bold'>
+          <div className='w-6 h-6 sm:w-8 sm:h-8 bg-orange-500 rounded-full flex items-center justify-center text-white font-bold text-sm sm:text-base'>
             🥉
           </div>
         );
       default:
         return (
-          <div className='w-8 h-8 bg-gray-200 dark:bg-gray-600 rounded-full flex items-center justify-center text-gray-700 dark:text-gray-300 font-bold text-sm'>
+          <div className='w-6 h-6 sm:w-8 sm:h-8 bg-gray-200 dark:bg-gray-600 rounded-full flex items-center justify-center text-gray-700 dark:text-gray-300 font-bold text-xs sm:text-sm'>
             {rank}
           </div>
         );
@@ -77,55 +77,61 @@ export function Leaderboard({
     }
   };
 
-  const displayedEntries = entries.slice(0, showTop);
+  const displayedEntries = entries?.slice(0, showTop);
 
   return (
     <Card className={className}>
       <div className='space-y-4'>
         {/* Header */}
-        <div className='flex items-center justify-between'>
+        <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2'>
           <div>
-            <Typography variant='h3' className='text-lg font-semibold'>
+            <Typography
+              variant='h3'
+              className='text-base sm:text-lg font-semibold'
+            >
               {title}
             </Typography>
             <Typography
               variant='p'
-              className='text-sm text-gray-600 dark:text-gray-400'
+              className='text-xs sm:text-sm text-gray-600 dark:text-gray-400'
             >
               {getTimeFrameLabel(timeFrame)}
             </Typography>
           </div>
-          <Badge className='bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-300'>
-            Top {showTop}
-          </Badge>
+
+          <div className='flex items-center space-x-2'>
+            <Badge className='bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-300 text-xs'>
+              {displayedEntries?.length || 0} participants
+            </Badge>
+          </div>
         </div>
 
-        {/* Leaderboard */}
+        {/* Leaderboard List */}
         <div className='space-y-2'>
-          {displayedEntries.map(entry => (
+          {displayedEntries?.map((entry, index) => (
             <div
-              key={entry.id}
-              className={`flex items-center space-x-4 p-3 rounded-lg transition-colors ${
-                entry.isCurrentUser
+              key={entry?.id}
+              className={`flex items-center space-x-3 p-3 rounded-lg transition-colors ${
+                entry?.isCurrentUser
                   ? 'bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-700'
-                  : 'hover:bg-gray-50 dark:hover:bg-gray-700'
+                  : 'hover:bg-gray-50 dark:hover:bg-gray-700/50'
               }`}
             >
               {/* Rank */}
-              <div className='flex-shrink-0'>{getRankIcon(entry.rank)}</div>
+              <div className='flex-shrink-0'>{getRankIcon(entry?.rank)}</div>
 
               {/* Avatar */}
               <div className='flex-shrink-0'>
-                {entry.avatar ? (
+                {entry?.avatar ? (
                   <img
                     src={entry.avatar}
-                    alt={entry.username}
-                    className='w-10 h-10 rounded-full'
+                    alt={entry?.username}
+                    className='w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover'
                   />
                 ) : (
-                  <div className='w-10 h-10 bg-gray-300 dark:bg-gray-600 rounded-full flex items-center justify-center'>
-                    <span className='text-gray-600 dark:text-gray-400 font-medium'>
-                      {entry.username.charAt(0).toUpperCase()}
+                  <div className='w-8 h-8 sm:w-10 sm:h-10 bg-gray-200 dark:bg-gray-600 rounded-full flex items-center justify-center'>
+                    <span className='text-sm font-medium text-gray-600 dark:text-gray-300'>
+                      {entry?.username?.charAt(0)?.toUpperCase()}
                     </span>
                   </div>
                 )}
@@ -137,58 +143,36 @@ export function Leaderboard({
                   <Typography
                     variant='p'
                     className={`font-medium truncate ${
-                      entry.isCurrentUser
-                        ? 'text-primary-700 dark:text-primary-300'
-                        : ''
+                      entry?.isCurrentUser
+                        ? 'text-primary-600 dark:text-primary-400'
+                        : 'text-gray-900 dark:text-gray-100'
                     }`}
                   >
-                    {entry.username}
+                    {entry?.username}
                   </Typography>
-                  {entry.isCurrentUser && (
+                  {entry?.isCurrentUser && (
                     <Badge className='bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-300 text-xs'>
                       You
                     </Badge>
                   )}
                 </div>
-
-                <div className='flex items-center space-x-4 mt-1 text-sm text-gray-600 dark:text-gray-400'>
-                  <span>{entry.problemsSolved} problems solved</span>
-                  {entry.streak > 0 && (
-                    <span className='flex items-center space-x-1'>
-                      <span>🔥</span>
-                      <span>{entry.streak} day streak</span>
-                    </span>
-                  )}
+                <div className='flex items-center space-x-4 text-xs text-gray-500 dark:text-gray-400'>
+                  <span>{entry?.problemsSolved} problems solved</span>
+                  <span>{entry?.streak} day streak</span>
                 </div>
-
-                {/* Badges */}
-                {entry.badges && entry.badges.length > 0 && (
-                  <div className='flex items-center space-x-1 mt-1'>
-                    {entry.badges.slice(0, 3).map((badge, index) => (
-                      <span
-                        key={index}
-                        className='text-xs px-2 py-0.5 bg-gray-100 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-full'
-                      >
-                        {badge}
-                      </span>
-                    ))}
-                    {entry.badges.length > 3 && (
-                      <span className='text-xs text-gray-500 dark:text-gray-400'>
-                        +{entry.badges.length - 3} more
-                      </span>
-                    )}
-                  </div>
-                )}
               </div>
 
               {/* Score */}
               <div className='flex-shrink-0 text-right'>
-                <Typography variant='p' className='font-bold text-lg'>
-                  {entry.score.toLocaleString()}
+                <Typography
+                  variant='p'
+                  className='font-bold text-lg text-gray-900 dark:text-gray-100'
+                >
+                  {entry?.score?.toLocaleString()}
                 </Typography>
                 <Typography
                   variant='p'
-                  className='text-sm text-gray-600 dark:text-gray-400'
+                  className='text-xs text-gray-500 dark:text-gray-400'
                 >
                   points
                 </Typography>
@@ -197,14 +181,26 @@ export function Leaderboard({
           ))}
         </div>
 
-        {/* Footer */}
-        {entries.length > showTop && (
-          <div className='text-center pt-4 border-t border-gray-200 dark:border-gray-700'>
+        {/* Empty State */}
+        {(!displayedEntries || displayedEntries.length === 0) && (
+          <div className='text-center py-8'>
             <Typography
               variant='p'
-              className='text-sm text-gray-600 dark:text-gray-400'
+              className='text-gray-500 dark:text-gray-400'
             >
-              Showing top {showTop} of {entries.length} participants
+              No participants yet
+            </Typography>
+          </div>
+        )}
+
+        {/* Footer */}
+        {displayedEntries && displayedEntries.length > 0 && (
+          <div className='pt-4 border-t border-gray-200 dark:border-gray-700'>
+            <Typography
+              variant='p'
+              className='text-xs text-gray-500 dark:text-gray-400 text-center'
+            >
+              Showing top {displayedEntries.length} of {entries?.length || 0} participants
             </Typography>
           </div>
         )}

@@ -70,17 +70,16 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           {...props}
         />
 
-        {(error || helperText) && (
-          <div className='mt-1'>
-            {error && (
-              <p className='text-sm text-red-600 dark:text-red-400'>{error}</p>
-            )}
-            {helperText && !error && (
-              <p className='text-sm text-gray-500 dark:text-gray-400'>
-                {helperText}
-              </p>
-            )}
-          </div>
+        {error && (
+          <p className='mt-1 text-sm text-red-600 dark:text-red-400'>
+            {error}
+          </p>
+        )}
+
+        {helperText && !error && (
+          <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
+            {helperText}
+          </p>
         )}
       </div>
     );

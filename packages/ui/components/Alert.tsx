@@ -99,18 +99,20 @@ export function Alert({
   return (
     <div className={classes}>
       <div className='flex'>
-        <div className={`flex-shrink-0 ${iconClasses[variant]}`}>
-          {getIcon()}
+        <div className='flex-shrink-0'>
+          <div className={`${iconClasses[variant]}`}>{getIcon()}</div>
         </div>
         <div className='ml-3 flex-1'>
-          {title && <h3 className='text-sm font-medium mb-1'>{title}</h3>}
+          {title && (
+            <h3 className='text-sm font-medium'>{title}</h3>
+          )}
           <div className='text-sm'>{children}</div>
         </div>
         {onClose && (
           <div className='ml-auto pl-3'>
             <button
               onClick={onClose}
-              className={`inline-flex rounded-md p-1.5 focus:outline-none focus:ring-2 focus:ring-offset-2 ${iconClasses[variant]} hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-gray-500 dark:focus:ring-gray-400`}
+              className={`inline-flex rounded-md p-1.5 focus:outline-none focus:ring-2 focus:ring-offset-2 ${iconClasses[variant]} hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-primary-500 dark:focus:ring-primary-400`}
             >
               <span className='sr-only'>Dismiss</span>
               <svg className='h-5 w-5' fill='currentColor' viewBox='0 0 20 20'>

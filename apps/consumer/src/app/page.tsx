@@ -1,10 +1,6 @@
 import {
   Card,
   Button,
-  ThemeToggle,
-  ThemeDebug,
-  ColorTest,
-  LoadingSpinner,
   ComponentDemo,
 } from '@fsi/ui';
 

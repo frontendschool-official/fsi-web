@@ -58,32 +58,39 @@ export function ProblemCard({
 
   return (
     <Card
-      className={`hover:shadow-lg transition-all duration-200 ${className}`}
+      className={`hover:shadow-lg transition-all duration-200 active:scale-95 ${className}`}
     >
-      <div className='space-y-4'>
+      <div className='space-y-3 sm:space-y-4'>
         {/* Header */}
-        <div className='flex items-start justify-between'>
-          <div className='flex-1'>
-            <div className='flex items-center space-x-2 mb-2'>
-              <Badge className={categoryColors[category]}>
+        <div className='flex items-start justify-between gap-3'>
+          <div className='flex-1 min-w-0'>
+            <div className='flex flex-wrap items-center gap-1 sm:gap-2 mb-2'>
+              <Badge
+                className={`${categoryColors[category]} text-xs px-2 py-1`}
+              >
                 {categoryLabels[category]}
               </Badge>
-              <Badge className={difficultyColors[difficulty]}>
-                {difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}
+              <Badge
+                className={`${difficultyColors[difficulty]} text-xs px-2 py-1`}
+              >
+                {difficulty?.charAt(0)?.toUpperCase() + difficulty?.slice(1)}
               </Badge>
               {isCompleted && (
-                <Badge className='bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'>
+                <Badge className='bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300 text-xs px-2 py-1'>
                   ✓ Completed
                 </Badge>
               )}
             </div>
-            <Typography variant='h3' className='text-lg font-semibold mb-2'>
+            <Typography
+              variant='h3'
+              className='text-base sm:text-lg font-semibold mb-2 line-clamp-2'
+            >
               {title}
             </Typography>
           </div>
           <button
             onClick={() => onBookmark?.(id)}
-            className={`p-2 rounded-full transition-colors ${
+            className={`p-2 rounded-full transition-colors flex-shrink-0 touch-manipulation ${
               isBookmarked
                 ? 'text-yellow-500 hover:text-yellow-600'
                 : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'
@@ -107,25 +114,25 @@ export function ProblemCard({
 
         {/* Description */}
         <Typography
-          variant='body'
-          className='text-gray-600 dark:text-gray-300 line-clamp-3'
+          variant='p'
+          className='text-sm text-gray-600 dark:text-gray-400 line-clamp-3'
         >
           {description}
         </Typography>
 
         {/* Tags */}
-        {tags.length > 0 && (
+        {tags?.length > 0 && (
           <div className='flex flex-wrap gap-1'>
-            {tags.slice(0, 3).map((tag, index) => (
+            {tags?.slice(0, 3)?.map((tag, index) => (
               <span
                 key={index}
-                className='px-2 py-1 text-xs bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 rounded-md'
+                className='px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-md'
               >
                 {tag}
               </span>
             ))}
-            {tags.length > 3 && (
-              <span className='px-2 py-1 text-xs text-gray-500 dark:text-gray-400'>
+            {tags?.length > 3 && (
+              <span className='px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-md'>
                 +{tags.length - 3} more
               </span>
             )}
@@ -133,7 +140,7 @@ export function ProblemCard({
         )}
 
         {/* Footer */}
-        <div className='flex items-center justify-between pt-2 border-t border-gray-200 dark:border-gray-700'>
+        <div className='flex items-center justify-between pt-2'>
           <div className='flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400'>
             {estimatedTime && (
               <div className='flex items-center space-x-1'>
@@ -154,12 +161,13 @@ export function ProblemCard({
               </div>
             )}
           </div>
+
           <Button
-            variant={isCompleted ? 'secondary' : 'primary'}
-            size='sm'
             onClick={() => onStart?.(id)}
+            size='sm'
+            className='text-xs sm:text-sm'
           >
-            {isCompleted ? 'Review' : 'Start Problem'}
+            {isCompleted ? 'Review' : 'Start'}
           </Button>
         </div>
       </div>

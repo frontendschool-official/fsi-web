@@ -39,14 +39,14 @@ export function NotificationCenter({
 }: NotificationCenterProps) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const unreadCount = notifications.filter(n => !n.isRead).length;
+  const unreadCount = notifications?.filter(n => !n?.isRead)?.length || 0;
 
   const getTypeIcon = (type: Notification['type']) => {
     switch (type) {
       case 'success':
         return (
           <svg
-            className='w-5 h-5 text-green-500'
+            className='w-4 h-4 sm:w-5 sm:h-5 text-green-500'
             fill='currentColor'
             viewBox='0 0 20 20'
           >
@@ -60,7 +60,7 @@ export function NotificationCenter({
       case 'info':
         return (
           <svg
-            className='w-5 h-5 text-blue-500'
+            className='w-4 h-4 sm:w-5 sm:h-5 text-blue-500'
             fill='currentColor'
             viewBox='0 0 20 20'
           >
@@ -74,7 +74,7 @@ export function NotificationCenter({
       case 'warning':
         return (
           <svg
-            className='w-5 h-5 text-yellow-500'
+            className='w-4 h-4 sm:w-5 sm:h-5 text-yellow-500'
             fill='currentColor'
             viewBox='0 0 20 20'
           >
@@ -88,7 +88,7 @@ export function NotificationCenter({
       case 'error':
         return (
           <svg
-            className='w-5 h-5 text-red-500'
+            className='w-4 h-4 sm:w-5 sm:h-5 text-red-500'
             fill='currentColor'
             viewBox='0 0 20 20'
           >
@@ -102,7 +102,7 @@ export function NotificationCenter({
       case 'achievement':
         return (
           <svg
-            className='w-5 h-5 text-purple-500'
+            className='w-4 h-4 sm:w-5 sm:h-5 text-purple-500'
             fill='currentColor'
             viewBox='0 0 20 20'
           >
@@ -113,6 +113,8 @@ export function NotificationCenter({
             />
           </svg>
         );
+      default:
+        return null;
     }
   };
 
@@ -147,12 +149,28 @@ export function NotificationCenter({
     return timestamp.toLocaleDateString();
   };
 
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleMarkAsRead = (id: string) => {
+    onMarkAsRead?.(id);
+  };
+
+  const handleMarkAllAsRead = () => {
+    onMarkAllAsRead?.();
+  };
+
+  const handleDelete = (id: string) => {
+    onDelete?.(id);
+  };
+
   return (
     <div className={`relative ${className}`}>
       {/* Notification Bell */}
       <button
-        onClick={() => setIsOpen(!isOpen)}
-        className='relative p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 transition-colors'
+        onClick={toggleDropdown}
+        className='relative p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors'
       >
         <svg
           className='w-6 h-6'
@@ -168,141 +186,114 @@ export function NotificationCenter({
           />
         </svg>
         {unreadCount > 0 && (
-          <Badge className='absolute -top-1 -right-1 bg-red-500 text-white text-xs min-w-[18px] h-[18px] flex items-center justify-center'>
+          <Badge className='absolute -top-1 -right-1 bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full min-w-[18px] h-[18px] flex items-center justify-center'>
             {unreadCount > 99 ? '99+' : unreadCount}
           </Badge>
         )}
       </button>
 
-      {/* Notification Panel */}
+      {/* Dropdown */}
       {isOpen && (
-        <div className='absolute right-0 top-full mt-2 w-80 z-50'>
-          <Card className='shadow-lg'>
-            <div className='space-y-4'>
+        <>
+          {/* Backdrop */}
+          <div
+            className='fixed inset-0 z-40'
+            onClick={toggleDropdown}
+          />
+
+          {/* Dropdown Content */}
+          <Card className='absolute right-0 mt-2 w-80 sm:w-96 z-50 shadow-xl border border-gray-200 dark:border-gray-700'>
+            <div className='p-4'>
               {/* Header */}
-              <div className='flex items-center justify-between pb-3 border-b border-gray-200 dark:border-gray-700'>
-                <Typography variant='h4' className='font-semibold'>
+              <div className='flex items-center justify-between mb-4'>
+                <Typography variant='h4' className='text-base font-semibold'>
                   Notifications
                 </Typography>
                 <div className='flex items-center space-x-2'>
-                  {unreadCount > 0 && onMarkAllAsRead && (
+                  {unreadCount > 0 && (
                     <Button
-                      variant='ghost'
+                      onClick={handleMarkAllAsRead}
+                      variant='outline'
                       size='sm'
-                      onClick={onMarkAllAsRead}
                       className='text-xs'
                     >
                       Mark all read
                     </Button>
                   )}
+                  <button
+                    onClick={toggleDropdown}
+                    className='p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'
+                  >
+                    <svg className='w-4 h-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                      <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
+                    </svg>
+                  </button>
                 </div>
               </div>
 
               {/* Notifications List */}
-              <div className='space-y-2 overflow-y-auto' style={{ maxHeight }}>
-                {notifications.length === 0 ? (
-                  <div className='text-center py-8 text-gray-500 dark:text-gray-400'>
-                    <svg
-                      className='w-12 h-12 mx-auto mb-3 opacity-50'
-                      fill='none'
-                      stroke='currentColor'
-                      viewBox='0 0 24 24'
-                    >
-                      <path
-                        strokeLinecap='round'
-                        strokeLinejoin='round'
-                        strokeWidth={2}
-                        d='M15 17h5l-5 5v-5zM10.5 3.75a6 6 0 00-6 6v3.75a6 6 0 006 6h3a6 6 0 006-6V9.75a6 6 0 00-6-6h-3z'
-                      />
-                    </svg>
-                    <Typography variant='p' className='text-sm'>
-                      No notifications yet
-                    </Typography>
-                  </div>
-                ) : (
-                  notifications.map(notification => (
+              <div
+                className='space-y-2 max-h-96 overflow-y-auto'
+                style={{ maxHeight }}
+              >
+                {notifications?.length > 0 ? (
+                  notifications?.map((notification) => (
                     <div
-                      key={notification.id}
+                      key={notification?.id}
                       className={`p-3 rounded-lg border-l-4 transition-colors ${
-                        notification.isRead
-                          ? 'opacity-75'
-                          : 'ring-2 ring-primary-200 dark:ring-primary-700'
-                      } ${getTypeColor(notification.type)}`}
+                        notification?.isRead
+                          ? 'bg-white dark:bg-gray-800 border-l-gray-300 dark:border-l-gray-600'
+                          : getTypeColor(notification?.type)
+                      }`}
                     >
                       <div className='flex items-start space-x-3'>
                         <div className='flex-shrink-0 mt-0.5'>
-                          {notification.icon || getTypeIcon(notification.type)}
+                          {notification?.icon || getTypeIcon(notification?.type)}
                         </div>
-
                         <div className='flex-1 min-w-0'>
                           <div className='flex items-start justify-between'>
                             <Typography
                               variant='p'
-                              className='font-medium text-sm'
+                              className={`font-medium text-sm ${
+                                notification?.isRead
+                                  ? 'text-gray-600 dark:text-gray-400'
+                                  : 'text-gray-900 dark:text-gray-100'
+                              }`}
                             >
-                              {notification.title}
+                              {notification?.title}
                             </Typography>
-                            <div className='flex items-center space-x-1'>
-                              {!notification.isRead && onMarkAsRead && (
-                                <button
-                                  onClick={() => onMarkAsRead(notification.id)}
-                                  className='p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'
-                                >
-                                  <svg
-                                    className='w-3 h-3'
-                                    fill='currentColor'
-                                    viewBox='0 0 20 20'
-                                  >
-                                    <path d='M9 2a1 1 0 000 2h2a1 1 0 100-2H9z' />
-                                    <path
-                                      fillRule='evenodd'
-                                      d='M4 5a2 2 0 012-2v1a1 1 0 001 1h6a1 1 0 001-1V3a2 2 0 012 2v10a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z'
-                                      clipRule='evenodd'
-                                    />
-                                  </svg>
-                                </button>
+                            <div className='flex items-center space-x-1 ml-2'>
+                              {!notification?.isRead && (
+                                <div className='w-2 h-2 bg-blue-500 rounded-full'></div>
                               )}
-                              {onDelete && (
-                                <button
-                                  onClick={() => onDelete(notification.id)}
-                                  className='p-1 text-gray-400 hover:text-red-600 dark:hover:text-red-400'
-                                >
-                                  <svg
-                                    className='w-3 h-3'
-                                    fill='currentColor'
-                                    viewBox='0 0 20 20'
-                                  >
-                                    <path
-                                      fillRule='evenodd'
-                                      d='M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z'
-                                      clipRule='evenodd'
-                                    />
-                                  </svg>
-                                </button>
-                              )}
+                              <button
+                                onClick={() => handleDelete(notification?.id)}
+                                className='p-1 text-gray-400 hover:text-red-500 transition-colors'
+                              >
+                                <svg className='w-3 h-3' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                                  <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
+                                </svg>
+                              </button>
                             </div>
                           </div>
-
                           <Typography
                             variant='p'
                             className='text-sm text-gray-600 dark:text-gray-400 mt-1'
                           >
-                            {notification.message}
+                            {notification?.message}
                           </Typography>
-
                           <div className='flex items-center justify-between mt-2'>
                             <Typography
-                              variant='span'
+                              variant='p'
                               className='text-xs text-gray-500 dark:text-gray-400'
                             >
-                              {formatTimestamp(notification.timestamp)}
+                              {formatTimestamp(notification?.timestamp)}
                             </Typography>
-
-                            {notification.action && (
+                            {notification?.action && (
                               <Button
-                                variant='ghost'
-                                size='sm'
                                 onClick={notification.action.onClick}
+                                variant='outline'
+                                size='sm'
                                 className='text-xs'
                               >
                                 {notification.action.label}
@@ -313,16 +304,17 @@ export function NotificationCenter({
                       </div>
                     </div>
                   ))
+                ) : (
+                  <div className='text-center py-8'>
+                    <Typography variant='p' className='text-gray-500 dark:text-gray-400'>
+                      No notifications
+                    </Typography>
+                  </div>
                 )}
               </div>
             </div>
           </Card>
-        </div>
-      )}
-
-      {/* Backdrop */}
-      {isOpen && (
-        <div className='fixed inset-0 z-40' onClick={() => setIsOpen(false)} />
+        </>
       )}
     </div>
   );

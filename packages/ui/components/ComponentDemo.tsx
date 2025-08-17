@@ -31,6 +31,7 @@ import {
   TestResults,
   Leaderboard,
   NotificationCenter,
+  Header,
 } from '../index';
 
 export function ComponentDemo() {
@@ -256,7 +257,7 @@ console.log(fibonacci(10));`;
             support. The components automatically adapt to light and dark
             themes.
           </Typography>
-          <div className='grid grid-cols-2 gap-4'>
+          <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
             <Card>
               <H4>Light Theme</H4>
               <Typography size='sm' color='muted'>
@@ -335,7 +336,7 @@ console.log(fibonacci(10));`;
       label: 'Forms',
       content: (
         <div className='space-y-6'>
-          <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+          <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
             <Input
               label='Name'
               placeholder='Enter your name'
@@ -425,7 +426,7 @@ console.log(fibonacci(10));`;
       id: 'frontend-school',
       label: 'Frontend School',
       content: (
-        <div className='space-y-8'>
+        <div className='space-y-6 sm:space-y-8'>
           <div>
             <H4>Code Editor</H4>
             <div className='mt-4'>
@@ -442,10 +443,10 @@ console.log(fibonacci(10));`;
 
           <div>
             <H4>Problem Cards</H4>
-            <div className='grid grid-cols-1 md:grid-cols-2 gap-4 mt-4'>
-              {demoProblems.map(problem => (
+            <div className='grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4'>
+              {demoProblems?.map(problem => (
                 <ProblemCard
-                  key={problem.id}
+                  key={problem?.id}
                   {...problem}
                   onStart={id => console.log('Starting problem:', id)}
                   onBookmark={id => console.log('Bookmarking problem:', id)}
@@ -512,6 +513,16 @@ console.log(fibonacci(10));`;
         </div>
       ),
     },
+    {
+      id: 'accessibility',
+      label: 'Accessibility',
+      content: (
+        <Typography size='sm'>
+          All components are built with accessibility in mind, including proper
+          ARIA labels, keyboard navigation, and screen reader support.
+        </Typography>
+      ),
+    },
   ];
 
   const accordionData = [
@@ -558,80 +569,156 @@ console.log(fibonacci(10));`;
   ];
 
   return (
-    <div className='max-w-6xl mx-auto p-6 space-y-8'>
-      <div className='text-center'>
-        <H1>UI Component Library</H1>
-        <Typography size='lg' color='muted'>
-          A comprehensive collection of theme-aware components
-        </Typography>
-      </div>
+    <div className='min-h-screen bg-gray-50 dark:bg-gray-900'>
+      {/* Mobile Header */}
+      <Header
+        onNavigationClick={item =>
+          console.log('Navigation clicked:', item.label)
+        }
+        user={{ email: 'demo@example.com' }}
+        onSignIn={() => console.log('Sign in clicked')}
+        onSignOut={() => console.log('Sign out clicked')}
+      />
 
-      {/* Alerts */}
-      <div className='space-y-4'>
-        <Alert variant='info' title='Welcome!'>
-          This demo showcases all available components with full theme support.
-        </Alert>
-        <Alert variant='success' title='Theme Support'>
-          All components automatically adapt to light and dark themes.
-        </Alert>
-      </div>
+      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6 sm:space-y-8'>
+        {/* Header */}
+        <div className='text-center space-y-3 sm:space-y-4 lg:space-y-6'>
+          <div className='space-y-2 sm:space-y-3'>
+            <H1 className='text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold tracking-tight'>
+              UI Component Library
+            </H1>
+            <Typography
+              size='lg'
+              color='muted'
+              className='text-sm sm:text-base md:text-lg lg:text-xl max-w-2xl mx-auto leading-relaxed'
+            >
+              A comprehensive collection of theme-aware components
+            </Typography>
+          </div>
 
-      {/* Main Content */}
-      <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
-        {/* Left Column */}
-        <div className='lg:col-span-2 space-y-6'>
-          <Card>
-            <Tabs tabs={tabsData} />
-          </Card>
-
-          <Card>
-            <H3>Interactive Components</H3>
-            <div className='space-y-4 mt-4'>
-              <div className='flex flex-wrap gap-4'>
-                <Tooltip content='This is a tooltip!'>
-                  <Button variant='outline'>Hover for tooltip</Button>
-                </Tooltip>
-                <Button variant='outline' onClick={() => setIsModalOpen(true)}>
-                  Open Modal
-                </Button>
-                <div className='flex items-center gap-2'>
-                  <LoadingSpinner size='sm' />
-                  <Typography size='sm'>Loading...</Typography>
-                </div>
-              </div>
+          {/* Responsive Stats */}
+          <div className='hidden sm:flex justify-center items-center space-x-6 lg:space-x-8 text-xs sm:text-sm text-gray-600 dark:text-gray-400'>
+            <div className='flex items-center space-x-1'>
+              <span className='font-semibold text-primary-600 dark:text-primary-400'>
+                25+
+              </span>
+              <span>Components</span>
             </div>
-          </Card>
+            <div className='w-px h-4 bg-gray-300 dark:bg-gray-600'></div>
+            <div className='flex items-center space-x-1'>
+              <span className='font-semibold text-primary-600 dark:text-primary-400'>
+                2
+              </span>
+              <span>Themes</span>
+            </div>
+            <div className='w-px h-4 bg-gray-300 dark:bg-gray-600'></div>
+            <div className='flex items-center space-x-1'>
+              <span className='font-semibold text-primary-600 dark:text-primary-400'>
+                100%
+              </span>
+              <span>Responsive</span>
+            </div>
+          </div>
+
+          {/* Mobile Stats */}
+          <div className='sm:hidden grid grid-cols-3 gap-4 text-xs text-gray-600 dark:text-gray-400'>
+            <div className='text-center p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700'>
+              <div className='font-semibold text-primary-600 dark:text-primary-400'>
+                25+
+              </div>
+              <div>Components</div>
+            </div>
+            <div className='text-center p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700'>
+              <div className='font-semibold text-primary-600 dark:text-primary-400'>
+                2
+              </div>
+              <div>Themes</div>
+            </div>
+            <div className='text-center p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700'>
+              <div className='font-semibold text-primary-600 dark:text-primary-400'>
+                100%
+              </div>
+              <div>Responsive</div>
+            </div>
+          </div>
         </div>
 
-        {/* Right Column */}
-        <div className='space-y-6'>
-          <Card>
-            <H3>Sidebar Navigation</H3>
-            <div className='mt-4'>
-              <Sidebar
-                sections={demoSidebarSections}
-                onItemClick={item => console.log('Clicked:', item.label)}
-                variant='compact'
-              />
-            </div>
-          </Card>
+        {/* Alerts */}
+        <div className='space-y-4'>
+          <Alert variant='info' title='Welcome!'>
+            This demo showcases all available components with full theme
+            support.
+          </Alert>
+          <Alert variant='success' title='Theme Support'>
+            All components automatically adapt to light and dark themes.
+          </Alert>
+        </div>
 
-          <Card>
-            <H3>Accordion</H3>
-            <div className='mt-4'>
-              <Accordion items={accordionData} />
-            </div>
-          </Card>
+        {/* Main Content */}
+        <div className='grid grid-cols-1 xl:grid-cols-4 gap-6 lg:gap-8'>
+          {/* Main Content Area */}
+          <div className='xl:col-span-3 space-y-6 lg:space-y-8'>
+            {/* Tabs Section */}
+            <Card className='overflow-hidden'>
+              <Tabs tabs={tabsData} />
+            </Card>
 
-          <Card>
-            <H3>Current Theme</H3>
-            <div className='mt-4 space-y-2'>
-              <Typography size='sm'>
-                Active theme: <Badge variant='primary'>{theme}</Badge>
-              </Typography>
-              <Progress value={theme === 'dark' ? 100 : 0} showLabel />
-            </div>
-          </Card>
+            {/* Interactive Components */}
+            <Card>
+              <H3 className='text-lg sm:text-xl'>Interactive Components</H3>
+              <div className='space-y-4 mt-4'>
+                <div className='flex flex-wrap gap-4'>
+                  <Tooltip content='This is a tooltip!'>
+                    <Button variant='outline'>Hover for tooltip</Button>
+                  </Tooltip>
+                  <Button
+                    variant='outline'
+                    onClick={() => setIsModalOpen(true)}
+                  >
+                    Open Modal
+                  </Button>
+                  <div className='flex items-center gap-2'>
+                    <LoadingSpinner size='sm' />
+                    <Typography size='sm'>Loading...</Typography>
+                  </div>
+                </div>
+              </div>
+            </Card>
+          </div>
+
+          {/* Sidebar */}
+          <div className='xl:col-span-1 space-y-6 lg:space-y-8'>
+            {/* Sidebar Navigation */}
+            <Card>
+              <H3 className='text-lg sm:text-xl mb-4'>Sidebar Navigation</H3>
+              <div className='mt-4'>
+                <Sidebar
+                  sections={demoSidebarSections}
+                  onItemClick={item => console.log('Clicked:', item.label)}
+                  variant='compact'
+                />
+              </div>
+            </Card>
+
+            {/* Accordion */}
+            <Card>
+              <H3 className='text-lg sm:text-xl mb-4'>Accordion</H3>
+              <div className='mt-4'>
+                <Accordion items={accordionData} />
+              </div>
+            </Card>
+
+            {/* Current Theme */}
+            <Card>
+              <H3 className='text-lg sm:text-xl mb-4'>Current Theme</H3>
+              <div className='mt-4 space-y-2'>
+                <Typography size='sm'>
+                  Active theme: <Badge variant='primary'>{theme}</Badge>
+                </Typography>
+                <Progress value={theme === 'dark' ? 100 : 0} showLabel />
+              </div>
+            </Card>
+          </div>
         </div>
       </div>
 
@@ -647,7 +734,7 @@ console.log(fibonacci(10));`;
             This is an example modal that demonstrates the modal component with
             theme support.
           </Typography>
-          <div className='flex justify-end space-x-2'>
+          <div className='flex flex-col sm:flex-row justify-end gap-2 sm:space-x-2'>
             <Button variant='outline' onClick={() => setIsModalOpen(false)}>
               Cancel
             </Button>

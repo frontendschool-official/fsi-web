@@ -99,188 +99,196 @@ export function TestResults({
   const successRate = totalTests > 0 ? (passedTests / totalTests) * 100 : 0;
 
   return (
-    <div className={`space-y-6 ${className}`}>
-      {/* Summary */}
-      <Card>
-        <div className='space-y-4'>
-          <div className='flex items-center justify-between'>
-            <Typography variant='h3' className='text-lg font-semibold'>
+    <Card className={className}>
+      <div className='space-y-6'>
+        {/* Header */}
+        <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4'>
+          <div>
+            <Typography
+              variant='h3'
+              className='text-lg sm:text-xl font-semibold'
+            >
               Test Results
             </Typography>
-            <div className='flex items-center space-x-2'>
-              <Badge
-                className={
-                  successRate === 100
-                    ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
-                    : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300'
-                }
-              >
-                {successRate.toFixed(1)}% Success
-              </Badge>
-            </div>
-          </div>
-
-          <div className='grid grid-cols-4 gap-4'>
-            <div className='text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg'>
-              <div className='text-2xl font-bold text-gray-900 dark:text-gray-100'>
-                {totalTests}
-              </div>
-              <div className='text-sm text-gray-600 dark:text-gray-400'>
-                Total Tests
-              </div>
-            </div>
-            <div className='text-center p-3 bg-green-50 dark:bg-green-900/20 rounded-lg'>
-              <div className='text-2xl font-bold text-green-600 dark:text-green-400'>
-                {passedTests}
-              </div>
-              <div className='text-sm text-gray-600 dark:text-gray-400'>
-                Passed
-              </div>
-            </div>
-            <div className='text-center p-3 bg-red-50 dark:bg-red-900/20 rounded-lg'>
-              <div className='text-2xl font-bold text-red-600 dark:text-red-400'>
-                {failedTests}
-              </div>
-              <div className='text-sm text-gray-600 dark:text-gray-400'>
-                Failed
-              </div>
-            </div>
-            <div className='text-center p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg'>
-              <div className='text-2xl font-bold text-yellow-600 dark:text-yellow-400'>
-                {errorTests}
-              </div>
-              <div className='text-sm text-gray-600 dark:text-gray-400'>
-                Errors
-              </div>
-            </div>
-          </div>
-
-          <div className='flex space-x-2'>
-            {onRetry && (
-              <Button variant='primary' size='sm' onClick={onRetry}>
-                Retry
-              </Button>
-            )}
-            {onViewSolution && (
-              <Button variant='outline' size='sm' onClick={onViewSolution}>
-                View Solution
-              </Button>
-            )}
-          </div>
-        </div>
-      </Card>
-
-      {/* Performance Metrics */}
-      <Card>
-        <Typography variant='h3' className='text-lg font-semibold mb-4'>
-          Performance Metrics
-        </Typography>
-
-        <div className='grid grid-cols-2 md:grid-cols-4 gap-4'>
-          <div className='text-center p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg'>
-            <div className='text-lg font-semibold text-blue-600 dark:text-blue-400'>
-              {performance.totalExecutionTime.toFixed(2)}ms
-            </div>
-            <div className='text-sm text-gray-600 dark:text-gray-400'>
-              Total Time
-            </div>
-          </div>
-          <div className='text-center p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg'>
-            <div className='text-lg font-semibold text-purple-600 dark:text-purple-400'>
-              {performance.averageExecutionTime.toFixed(2)}ms
-            </div>
-            <div className='text-sm text-gray-600 dark:text-gray-400'>
-              Avg Time
-            </div>
-          </div>
-          <div className='text-center p-3 bg-orange-50 dark:bg-orange-900/20 rounded-lg'>
-            <div className='text-lg font-semibold text-orange-600 dark:text-orange-400'>
-              {performance.memoryUsage.toFixed(2)}MB
-            </div>
-            <div className='text-sm text-gray-600 dark:text-gray-400'>
-              Memory
-            </div>
-          </div>
-          <div className='text-center p-3 bg-green-50 dark:bg-green-900/20 rounded-lg'>
-            <div className='text-lg font-semibold text-green-600 dark:text-green-400'>
-              {performance.timeComplexity || 'N/A'}
-            </div>
-            <div className='text-sm text-gray-600 dark:text-gray-400'>
-              Time Complexity
-            </div>
-          </div>
-        </div>
-      </Card>
-
-      {/* Test Cases */}
-      <Card>
-        <Typography variant='h3' className='text-lg font-semibold mb-4'>
-          Test Cases
-        </Typography>
-
-        <div className='space-y-3'>
-          {testCases.map(testCase => (
-            <div
-              key={testCase.id}
-              className='border border-gray-200 dark:border-gray-700 rounded-lg p-4'
+            <Typography
+              variant='p'
+              className='text-sm text-gray-600 dark:text-gray-400'
             >
-              <div className='flex items-center justify-between mb-3'>
-                <div className='flex items-center space-x-2'>
-                  {getStatusIcon(testCase.status)}
-                  <Typography variant='p' className='font-medium'>
-                    {testCase.name}
-                  </Typography>
-                </div>
-                <Badge className={getStatusColor(testCase.status)}>
-                  {testCase.status.charAt(0).toUpperCase() +
-                    testCase.status.slice(1)}
-                </Badge>
-              </div>
+              {passedTests} of {totalTests} tests passed
+            </Typography>
+          </div>
 
-              <div className='grid grid-cols-1 md:grid-cols-3 gap-4 text-sm'>
-                <div>
-                  <div className='font-medium text-gray-700 dark:text-gray-300 mb-1'>
-                    Input:
-                  </div>
-                  <div className='bg-gray-50 dark:bg-gray-700 p-2 rounded font-mono text-xs'>
-                    {testCase.input}
-                  </div>
-                </div>
-                <div>
-                  <div className='font-medium text-gray-700 dark:text-gray-300 mb-1'>
-                    Expected:
-                  </div>
-                  <div className='bg-gray-50 dark:bg-gray-700 p-2 rounded font-mono text-xs'>
-                    {testCase.expectedOutput}
-                  </div>
-                </div>
-                <div>
-                  <div className='font-medium text-gray-700 dark:text-gray-300 mb-1'>
-                    Actual:
-                  </div>
-                  <div
-                    className={`p-2 rounded font-mono text-xs ${
-                      testCase.status === 'passed'
-                        ? 'bg-green-50 dark:bg-green-900/20'
-                        : 'bg-red-50 dark:bg-red-900/20'
-                    }`}
-                  >
-                    {testCase.actualOutput || 'N/A'}
-                  </div>
-                </div>
-              </div>
-
-              {testCase.executionTime && (
-                <div className='mt-3 text-xs text-gray-500 dark:text-gray-400'>
-                  Execution time: {testCase.executionTime.toFixed(2)}ms
-                  {testCase.memoryUsed &&
-                    ` | Memory: ${testCase.memoryUsed.toFixed(2)}MB`}
-                </div>
-              )}
-            </div>
-          ))}
+          <div className='flex items-center space-x-3'>
+            <Badge
+              className={`text-sm ${
+                successRate >= 80
+                  ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
+                  : successRate >= 60
+                  ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300'
+                  : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300'
+              }`}
+            >
+              {successRate.toFixed(1)}% Success
+            </Badge>
+          </div>
         </div>
-      </Card>
-    </div>
+
+        {/* Summary Stats */}
+        <div className='grid grid-cols-2 sm:grid-cols-4 gap-4'>
+          <div className='text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg'>
+            <Typography variant='h4' className='text-green-600 dark:text-green-400'>
+              {passedTests}
+            </Typography>
+            <Typography variant='p' className='text-sm text-green-600 dark:text-green-400'>
+              Passed
+            </Typography>
+          </div>
+          <div className='text-center p-4 bg-red-50 dark:bg-red-900/20 rounded-lg'>
+            <Typography variant='h4' className='text-red-600 dark:text-red-400'>
+              {failedTests}
+            </Typography>
+            <Typography variant='p' className='text-sm text-red-600 dark:text-red-400'>
+              Failed
+            </Typography>
+          </div>
+          <div className='text-center p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg'>
+            <Typography variant='h4' className='text-yellow-600 dark:text-yellow-400'>
+              {errorTests}
+            </Typography>
+            <Typography variant='p' className='text-sm text-yellow-600 dark:text-yellow-400'>
+              Errors
+            </Typography>
+          </div>
+          <div className='text-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg'>
+            <Typography variant='h4' className='text-blue-600 dark:text-blue-400'>
+              {performance?.totalExecutionTime?.toFixed(2) || '0'}ms
+            </Typography>
+            <Typography variant='p' className='text-sm text-blue-600 dark:text-blue-400'>
+              Total Time
+            </Typography>
+          </div>
+        </div>
+
+        {/* Performance Metrics */}
+        <div className='space-y-4'>
+          <Typography variant='h4' className='text-base font-semibold'>
+            Performance Metrics
+          </Typography>
+          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4'>
+            <div className='p-3 bg-gray-50 dark:bg-gray-800 rounded-lg'>
+              <Typography variant='p' className='text-sm text-gray-600 dark:text-gray-400'>
+                Average Time
+              </Typography>
+              <Typography variant='p' className='font-semibold'>
+                {performance?.averageExecutionTime?.toFixed(2) || '0'}ms
+              </Typography>
+            </div>
+            <div className='p-3 bg-gray-50 dark:bg-gray-800 rounded-lg'>
+              <Typography variant='p' className='text-sm text-gray-600 dark:text-gray-400'>
+                Memory Usage
+              </Typography>
+              <Typography variant='p' className='font-semibold'>
+                {performance?.memoryUsage?.toFixed(2) || '0'} MB
+              </Typography>
+            </div>
+            <div className='p-3 bg-gray-50 dark:bg-gray-800 rounded-lg'>
+              <Typography variant='p' className='text-sm text-gray-600 dark:text-gray-400'>
+                Time Complexity
+              </Typography>
+              <Typography variant='p' className='font-semibold'>
+                {performance?.timeComplexity || 'N/A'}
+              </Typography>
+            </div>
+            <div className='p-3 bg-gray-50 dark:bg-gray-800 rounded-lg'>
+              <Typography variant='p' className='text-sm text-gray-600 dark:text-gray-400'>
+                Space Complexity
+              </Typography>
+              <Typography variant='p' className='font-semibold'>
+                {performance?.spaceComplexity || 'N/A'}
+              </Typography>
+            </div>
+          </div>
+        </div>
+
+        {/* Test Cases */}
+        <div className='space-y-4'>
+          <Typography variant='h4' className='text-base font-semibold'>
+            Test Cases ({testCases?.length || 0})
+          </Typography>
+          <div className='space-y-3'>
+            {testCases?.map((testCase, index) => (
+              <div
+                key={testCase?.id || index}
+                className='p-4 border border-gray-200 dark:border-gray-700 rounded-lg'
+              >
+                <div className='flex items-start justify-between gap-3 mb-3'>
+                  <div className='flex items-center space-x-2'>
+                    {getStatusIcon(testCase?.status)}
+                    <Typography variant='p' className='font-medium'>
+                      {testCase?.name}
+                    </Typography>
+                    <Badge className={getStatusColor(testCase?.status)}>
+                      {testCase?.status}
+                    </Badge>
+                  </div>
+                  {testCase?.executionTime && (
+                    <Typography variant='p' className='text-sm text-gray-500 dark:text-gray-400'>
+                      {testCase.executionTime}ms
+                    </Typography>
+                  )}
+                </div>
+
+                <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm'>
+                  <div>
+                    <Typography variant='p' className='font-medium text-gray-700 dark:text-gray-300 mb-1'>
+                      Input
+                    </Typography>
+                    <pre className='bg-gray-50 dark:bg-gray-800 p-2 rounded text-xs overflow-x-auto'>
+                      {testCase?.input}
+                    </pre>
+                  </div>
+                  <div>
+                    <Typography variant='p' className='font-medium text-gray-700 dark:text-gray-300 mb-1'>
+                      Expected Output
+                    </Typography>
+                    <pre className='bg-gray-50 dark:bg-gray-800 p-2 rounded text-xs overflow-x-auto'>
+                      {testCase?.expectedOutput}
+                    </pre>
+                  </div>
+                </div>
+
+                {testCase?.actualOutput && (
+                  <div className='mt-3'>
+                    <Typography variant='p' className='font-medium text-gray-700 dark:text-gray-300 mb-1'>
+                      Actual Output
+                    </Typography>
+                    <pre className='bg-gray-50 dark:bg-gray-800 p-2 rounded text-xs overflow-x-auto'>
+                      {testCase.actualOutput}
+                    </pre>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Actions */}
+        <div className='flex flex-col sm:flex-row gap-3 pt-4 border-t border-gray-200 dark:border-gray-700'>
+          <Button
+            onClick={onRetry}
+            variant='outline'
+            className='flex-1 sm:flex-none'
+          >
+            Retry Tests
+          </Button>
+          <Button
+            onClick={onViewSolution}
+            className='flex-1 sm:flex-none'
+          >
+            View Solution
+          </Button>
+        </div>
+      </div>
+    </Card>
   );
 }

@@ -24,25 +24,25 @@ export function Modal({
 }: ModalProps) {
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        onClose();
+      if (e?.key === 'Escape') {
+        onClose?.();
       }
     };
 
     if (isOpen) {
-      document.addEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'hidden';
+      document?.addEventListener('keydown', handleEscape);
+      document?.body?.style && (document.body.style.overflow = 'hidden');
     }
 
     return () => {
-      document.removeEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'unset';
+      document?.removeEventListener('keydown', handleEscape);
+      document?.body?.style && (document.body.style.overflow = 'unset');
     };
   }, [isOpen, onClose]);
 
   const handleBackdropClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) {
-      onClose();
+    if (e?.target === e?.currentTarget) {
+      onClose?.();
     }
   };
 
@@ -108,6 +108,5 @@ export function Modal({
     </div>
   );
 
-  // Use portal to render modal at the end of body
-  return createPortal(modalContent, document.body);
+  return createPortal(modalContent, document?.body || document?.documentElement || document);
 }

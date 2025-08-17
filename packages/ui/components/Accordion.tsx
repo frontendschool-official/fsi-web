@@ -29,16 +29,16 @@ export function Accordion({
   const toggleItem = (itemId: string) => {
     if (allowMultiple) {
       setOpenItems(prev =>
-        prev.includes(itemId)
-          ? prev.filter(id => id !== itemId)
-          : [...prev, itemId]
+        prev?.includes(itemId)
+          ? prev?.filter(id => id !== itemId)
+          : [...(prev || []), itemId]
       );
     } else {
-      setOpenItems(prev => (prev.includes(itemId) ? [] : [itemId]));
+      setOpenItems(prev => (prev?.includes(itemId) ? [] : [itemId]));
     }
   };
 
-  const isOpen = (itemId: string) => openItems.includes(itemId);
+  const isOpen = (itemId: string) => openItems?.includes(itemId);
 
   const variantClasses = {
     default: {
@@ -66,13 +66,13 @@ export function Accordion({
     'w-full text-left transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-primary-400';
 
   return (
-    <div className={`${variantClasses[variant].container} ${className}`}>
-      {items.map(item => {
-        const itemOpen = isOpen(item.id);
-        const isDisabled = item.disabled;
+    <div className={`${variantClasses[variant]?.container} ${className}`}>
+      {items?.map(item => {
+        const itemOpen = isOpen(item?.id);
+        const isDisabled = item?.disabled;
 
         const headerClasses = `${baseClasses} ${
-          variantClasses[variant].header
+          variantClasses[variant]?.header
         } ${
           itemOpen
             ? 'bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100'
@@ -80,14 +80,14 @@ export function Accordion({
         } ${isDisabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`;
 
         return (
-          <div key={item.id} className={variantClasses[variant].item}>
+          <div key={item?.id} className={variantClasses[variant]?.item}>
             <button
-              onClick={() => !isDisabled && toggleItem(item.id)}
+              onClick={() => !isDisabled && toggleItem(item?.id)}
               disabled={isDisabled}
               className={headerClasses}
             >
               <div className='flex items-center justify-between'>
-                <div className='font-medium'>{item.title}</div>
+                <div className='font-medium'>{item?.title}</div>
                 <svg
                   className={`h-5 w-5 text-gray-500 dark:text-gray-400 transition-transform duration-200 ${
                     itemOpen ? 'rotate-180' : ''
@@ -107,10 +107,10 @@ export function Accordion({
             </button>
 
             {itemOpen && (
-              <div
-                className={`${variantClasses[variant].content} text-gray-600 dark:text-gray-400`}
-              >
-                {item.content}
+              <div className={variantClasses[variant]?.content}>
+                <div className='text-gray-600 dark:text-gray-400'>
+                  {item?.content}
+                </div>
               </div>
             )}
           </div>

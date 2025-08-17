@@ -67,7 +67,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
 
     const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
       if (onChange) {
-        onChange(e.target.value);
+        onChange(e?.target?.value || '');
       }
     };
 
@@ -96,22 +96,21 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
                 {placeholder}
               </option>
             )}
-            {options.map(option => (
+            {options?.map(option => (
               <option
-                key={option.value}
-                value={option.value}
-                disabled={option.disabled}
-                className='bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100'
+                key={option?.value}
+                value={option?.value}
+                disabled={option?.disabled}
               >
-                {option.label}
+                {option?.label}
               </option>
             ))}
           </select>
 
-          {/* Custom dropdown arrow */}
+          {/* Custom arrow icon */}
           <div className='absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none'>
             <svg
-              className='h-5 w-5 text-gray-400 dark:text-gray-500'
+              className='h-4 w-4 text-gray-400'
               fill='none'
               stroke='currentColor'
               viewBox='0 0 24 24'
@@ -126,17 +125,16 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
           </div>
         </div>
 
-        {(error || helperText) && (
-          <div className='mt-1'>
-            {error && (
-              <p className='text-sm text-red-600 dark:text-red-400'>{error}</p>
-            )}
-            {helperText && !error && (
-              <p className='text-sm text-gray-500 dark:text-gray-400'>
-                {helperText}
-              </p>
-            )}
-          </div>
+        {error && (
+          <p className='mt-1 text-sm text-red-600 dark:text-red-400'>
+            {error}
+          </p>
+        )}
+
+        {helperText && !error && (
+          <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
+            {helperText}
+          </p>
         )}
       </div>
     );

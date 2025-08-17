@@ -40,7 +40,7 @@ export function ThemeDebug() {
         <p className='text-gray-600 dark:text-gray-300'>
           User:{' '}
           <span className='font-mono bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded'>
-            {user ? user.email : 'Not signed in'}
+            {user ? user?.email : 'Not signed in'}
           </span>
         </p>
 
@@ -62,7 +62,7 @@ export function ThemeDebug() {
           HTML class:{' '}
           <span className='font-mono bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded'>
             {typeof document !== 'undefined'
-              ? document.documentElement.className
+              ? document?.documentElement?.className
               : 'SSR'}
           </span>
         </p>
@@ -71,7 +71,7 @@ export function ThemeDebug() {
           localStorage:{' '}
           <span className='font-mono bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded'>
             {typeof window !== 'undefined'
-              ? localStorage.getItem('theme') || 'null'
+              ? localStorage?.getItem('theme') || 'null'
               : 'SSR'}
           </span>
         </p>
@@ -85,13 +85,13 @@ export function ThemeDebug() {
           Toggle Theme
         </button>
         <button
-          onClick={() => setTheme('light')}
+          onClick={() => setTheme?.('light')}
           className='px-3 py-1 bg-gray-500 text-white rounded text-sm hover:bg-gray-600'
         >
           Force Light
         </button>
         <button
-          onClick={() => setTheme('dark')}
+          onClick={() => setTheme?.('dark')}
           className='px-3 py-1 bg-gray-800 text-white rounded text-sm hover:bg-gray-900'
         >
           Force Dark

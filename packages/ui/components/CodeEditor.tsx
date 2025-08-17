@@ -25,6 +25,7 @@ export function CodeEditor({
   placeholder = '// Start coding here...',
 }: CodeEditorProps) {
   const [code, setCode] = useState(initialCode);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const lineNumbersRef = useRef<HTMLDivElement>(null);
 
@@ -33,39 +34,44 @@ export function CodeEditor({
   }, [initialCode]);
 
   const handleCodeChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const newCode = e.target.value;
+    const newCode = e?.target?.value || '';
     setCode(newCode);
     onChange?.(newCode);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Tab') {
+    if (e?.key === 'Tab') {
       e.preventDefault();
-      const start = e.currentTarget.selectionStart;
-      const end = e.currentTarget.selectionEnd;
-      const newCode = code.substring(0, start) + '  ' + code.substring(end);
+      const start = e?.currentTarget?.selectionStart || 0;
+      const end = e?.currentTarget?.selectionEnd || 0;
+      const newCode = code?.substring(0, start) + '  ' + code?.substring(end);
       setCode(newCode);
       onChange?.(newCode);
 
       // Set cursor position after tab
       setTimeout(() => {
-        e.currentTarget.selectionStart = e.currentTarget.selectionEnd =
-          start + 2;
+        if (e?.currentTarget) {
+          e.currentTarget.selectionStart = e.currentTarget.selectionEnd = start + 2;
+        }
       }, 0);
     }
   };
 
   const getLineNumbers = () => {
-    const lines = code.split('\n');
-    return lines.map((_, index) => index + 1).join('\n');
+    const lines = code?.split('\n') || [];
+    return lines?.map((_, index) => index + 1)?.join('\n') || '';
   };
 
   const copyToClipboard = async () => {
     try {
-      await navigator.clipboard.writeText(code);
+      await navigator?.clipboard?.writeText(code);
     } catch (err) {
       console.error('Failed to copy code:', err);
     }
+  };
+
+  const toggleFullscreen = () => {
+    setIsFullscreen(!isFullscreen);
   };
 
   const baseClasses = 'font-mono text-sm leading-relaxed';
@@ -74,41 +80,59 @@ export function CodeEditor({
     dark: 'bg-gray-900 text-gray-100 border-gray-700',
   };
 
+  const containerClasses = isFullscreen
+    ? 'fixed inset-0 z-50 bg-white dark:bg-gray-900'
+    : 'relative';
+
   return (
-    <div className={`relative ${className}`}>
+    <div className={`${containerClasses} ${className}`}>
       {/* Header */}
       <div
-        className={`flex items-center justify-between p-3 border-b ${themeClasses[theme]}`}
+        className={`flex items-center justify-between p-3 border-b ${
+          themeClasses[theme]
+        } ${isFullscreen ? 'sticky top-0 z-10' : ''}`}
       >
-        <div className='flex items-center space-x-2'>
-          <div className='flex space-x-1'>
+        <div className='flex items-center space-x-2 min-w-0 flex-1'>
+          <div className='flex space-x-1 flex-shrink-0'>
             <div className='w-3 h-3 rounded-full bg-red-500'></div>
             <div className='w-3 h-3 rounded-full bg-yellow-500'></div>
             <div className='w-3 h-3 rounded-full bg-green-500'></div>
           </div>
-          <span className='text-xs font-medium text-gray-500 dark:text-gray-400'>
+          <span className='text-xs font-medium text-gray-500 dark:text-gray-400 truncate'>
             {language}
           </span>
         </div>
-        <Button
-          variant='ghost'
-          size='sm'
-          onClick={copyToClipboard}
-          className='text-xs'
-        >
-          Copy
-        </Button>
+
+        <div className='flex items-center space-x-2'>
+          <Button
+            onClick={copyToClipboard}
+            variant='outline'
+            size='sm'
+            className='text-xs'
+          >
+            Copy
+          </Button>
+          <Button
+            onClick={toggleFullscreen}
+            variant='outline'
+            size='sm'
+            className='text-xs'
+          >
+            {isFullscreen ? 'Exit' : 'Fullscreen'}
+          </Button>
+        </div>
       </div>
 
       {/* Editor */}
-      <div className={`relative border ${themeClasses[theme]}`}>
+      <div className='relative'>
         {showLineNumbers && (
           <div
             ref={lineNumbersRef}
-            className={`absolute left-0 top-0 w-12 p-3 text-xs text-gray-500 dark:text-gray-400 select-none ${baseClasses}`}
-            style={{ lineHeight: '1.5rem' }}
+            className={`absolute left-0 top-0 bottom-0 w-12 p-3 text-xs text-gray-500 dark:text-gray-400 select-none ${
+              themeClasses[theme]
+            } border-r`}
           >
-            {getLineNumbers()}
+            <pre className='font-mono'>{getLineNumbers()}</pre>
           </div>
         )}
 
@@ -119,14 +143,12 @@ export function CodeEditor({
           onKeyDown={handleKeyDown}
           readOnly={readOnly}
           placeholder={placeholder}
-          className={`w-full p-3 resize-none focus:outline-none ${baseClasses} ${
-            showLineNumbers ? 'pl-16' : ''
-          } ${themeClasses[theme]}`}
+          className={`w-full p-3 resize-none outline-none ${
+            showLineNumbers ? 'pl-16' : 'pl-3'
+          } ${baseClasses} ${themeClasses[theme]}`}
           style={{
-            lineHeight: '1.5rem',
-            minHeight: '200px',
-            fontFamily:
-              'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
+            minHeight: '300px',
+            ...(isFullscreen && { height: 'calc(100vh - 80px)' }),
           }}
         />
       </div>

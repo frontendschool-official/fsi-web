@@ -24,7 +24,7 @@ export function Tabs({
   orientation = 'horizontal',
   className = '',
 }: TabsProps) {
-  const [activeTab, setActiveTab] = useState(defaultTab || tabs[0]?.id || '');
+  const [activeTab, setActiveTab] = useState(defaultTab || tabs?.[0]?.id || '');
 
   const baseClasses =
     'transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 ';
@@ -64,29 +64,29 @@ export function Tabs({
     setActiveTab(tabId);
   };
 
-  const activeTabContent = tabs.find(tab => tab.id === activeTab)?.content;
+  const activeTabContent = tabs?.find(tab => tab?.id === activeTab)?.content;
 
   return (
     <div className={className}>
       <div className={orientationClasses[orientation]}>
-        {tabs.map(tab => {
-          const isActive = tab.id === activeTab;
-          const isDisabled = tab.disabled;
+        {tabs?.map(tab => {
+          const isActive = tab?.id === activeTab;
+          const isDisabled = tab?.disabled;
 
-          const tabClasses = `${baseClasses} ${variantClasses[variant].tab} ${
+          const tabClasses = `${baseClasses} ${variantClasses[variant]?.tab} ${
             isActive
-              ? variantClasses[variant].active
-              : variantClasses[variant].inactive
+              ? variantClasses[variant]?.active
+              : variantClasses[variant]?.inactive
           } ${isDisabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`;
 
           return (
             <button
-              key={tab.id}
-              onClick={() => !isDisabled && handleTabClick(tab.id)}
+              key={tab?.id}
+              onClick={() => !isDisabled && handleTabClick(tab?.id)}
               disabled={isDisabled}
               className={tabClasses}
             >
-              {tab.label}
+              {tab?.label}
             </button>
           );
         })}
