@@ -5,16 +5,10 @@ import { Card } from './Card';
 import { Progress } from './Progress';
 import { Typography } from './Typography';
 import { Badge } from './Badge';
-
-interface ProgressData {
-  category: 'dsa' | 'machine-coding' | 'system-design';
-  completed: number;
-  total: number;
-  streak?: number;
-}
+import { CategoryProgressData } from '@config/typings/types';
 
 interface ProgressTrackerProps {
-  progress: ProgressData[];
+  progress: CategoryProgressData[];
   totalCompleted: number;
   totalProblems: number;
   currentStreak: number;
@@ -119,11 +113,16 @@ export function ProgressTracker({
                 : 0;
 
             return (
-              <div key={categoryProgress?.category || index} className='space-y-2'>
+              <div
+                key={categoryProgress?.category || index}
+                className='space-y-2'
+              >
                 <div className='flex items-center justify-between'>
                   <div className='flex items-center space-x-2'>
                     <div
-                      className={`w-3 h-3 rounded-full ${categoryColors[categoryProgress?.category]}`}
+                      className={`w-3 h-3 rounded-full ${
+                        categoryColors[categoryProgress?.category]
+                      }`}
                     />
                     <Typography
                       variant='p'
@@ -210,7 +209,10 @@ export function ProgressTracker({
                 <Typography variant='p' className='font-medium text-sm'>
                   Getting Started
                 </Typography>
-                <Typography variant='p' className='text-xs text-gray-600 dark:text-gray-400'>
+                <Typography
+                  variant='p'
+                  className='text-xs text-gray-600 dark:text-gray-400'
+                >
                   Completed 25% of problems
                 </Typography>
               </div>
@@ -226,7 +228,10 @@ export function ProgressTracker({
                 <Typography variant='p' className='font-medium text-sm'>
                   Halfway There
                 </Typography>
-                <Typography variant='p' className='text-xs text-gray-600 dark:text-gray-400'>
+                <Typography
+                  variant='p'
+                  className='text-xs text-gray-600 dark:text-gray-400'
+                >
                   Completed 50% of problems
                 </Typography>
               </div>
@@ -242,7 +247,10 @@ export function ProgressTracker({
                 <Typography variant='p' className='font-medium text-sm'>
                   Almost There
                 </Typography>
-                <Typography variant='p' className='text-xs text-gray-600 dark:text-gray-400'>
+                <Typography
+                  variant='p'
+                  className='text-xs text-gray-600 dark:text-gray-400'
+                >
                   Completed 75% of problems
                 </Typography>
               </div>
@@ -258,7 +266,10 @@ export function ProgressTracker({
                 <Typography variant='p' className='font-medium text-sm'>
                   Master
                 </Typography>
-                <Typography variant='p' className='text-xs text-gray-600 dark:text-gray-400'>
+                <Typography
+                  variant='p'
+                  className='text-xs text-gray-600 dark:text-gray-400'
+                >
                   Completed all problems
                 </Typography>
               </div>
@@ -274,7 +285,10 @@ export function ProgressTracker({
                 <Typography variant='p' className='font-medium text-sm'>
                   Week Warrior
                 </Typography>
-                <Typography variant='p' className='text-xs text-gray-600 dark:text-gray-400'>
+                <Typography
+                  variant='p'
+                  className='text-xs text-gray-600 dark:text-gray-400'
+                >
                   7-day streak achieved
                 </Typography>
               </div>
@@ -290,7 +304,10 @@ export function ProgressTracker({
                 <Typography variant='p' className='font-medium text-sm'>
                   Consistency King
                 </Typography>
-                <Typography variant='p' className='text-xs text-gray-600 dark:text-gray-400'>
+                <Typography
+                  variant='p'
+                  className='text-xs text-gray-600 dark:text-gray-400'
+                >
                   30-day streak achieved
                 </Typography>
               </div>

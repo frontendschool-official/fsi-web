@@ -1,5 +1,5 @@
 import { getApps, initializeApp, FirebaseOptions } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
+import { getAuth as getFirebaseAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { env } from './env';
 
@@ -29,7 +29,14 @@ export function getFirebaseApp() {
  * Get the Firebase Auth instance associated with our singleton app.
  */
 export function auth() {
-  return getAuth(getFirebaseApp());
+  return getFirebaseAuth(getFirebaseApp());
+}
+
+/**
+ * Get the Firebase Auth instance for direct use.
+ */
+export function getAuth() {
+  return getFirebaseAuth(getFirebaseApp());
 }
 
 /**

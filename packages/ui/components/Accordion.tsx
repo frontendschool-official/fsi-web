@@ -1,13 +1,7 @@
 'use client';
 
 import React, { ReactNode, useState } from 'react';
-
-interface AccordionItem {
-  id: string;
-  title: ReactNode;
-  content: ReactNode;
-  disabled?: boolean;
-}
+import { AccordionItem } from '@config/typings/types';
 
 interface AccordionProps {
   items: AccordionItem[];

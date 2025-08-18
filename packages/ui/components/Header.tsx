@@ -4,15 +4,7 @@ import React, { useState } from 'react';
 import { Button } from './Button';
 import { ThemeToggle } from './ThemeToggle';
 import { Typography } from './Typography';
-
-interface NavigationItem {
-  id: string;
-  label: string;
-  href?: string;
-  icon?: React.ReactNode;
-  badge?: string | number;
-  isActive?: boolean;
-}
+import { NavigationItem } from '@config/typings/types';
 
 interface HeaderProps {
   navigationItems?: NavigationItem[];

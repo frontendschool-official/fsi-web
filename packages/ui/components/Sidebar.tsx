@@ -2,24 +2,7 @@
 
 import React, { useState } from 'react';
 import { Typography } from './Typography';
-
-interface SidebarItem {
-  id: string;
-  label: string;
-  icon?: React.ReactNode;
-  href?: string;
-  badge?: string | number;
-  children?: SidebarItem[];
-  isActive?: boolean;
-}
-
-interface SidebarSection {
-  id: string;
-  title: string;
-  items: SidebarItem[];
-  isCollapsible?: boolean;
-  isCollapsed?: boolean;
-}
+import { SidebarItem, SidebarSection } from '@config/typings/types';
 
 interface SidebarProps {
   sections: SidebarSection[];

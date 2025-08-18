@@ -1,8 +1,5 @@
-import {
-  Card,
-  Button,
-  ComponentDemo,
-} from '@fsi/ui';
+import { Card, Button, ComponentDemo } from '@fsi/ui';
+import MultiSelectDemo from './multiselect-demo/page';
 
 export default function HomePage() {
   return (
@@ -24,7 +21,7 @@ export default function HomePage() {
         </div>
       </section>
       <ComponentDemo />
-
+      <MultiSelectDemo />
       {/* Theme Showcase */}
       <section className='space-y-6'>
         <h2 className='text-2xl font-semibold text-gray-900 dark:text-gray-100'>

@@ -1,12 +1,7 @@
 'use client';
 
 import React, { forwardRef, SelectHTMLAttributes } from 'react';
-
-interface SelectOption {
-  value: string;
-  label: string;
-  disabled?: boolean;
-}
+import { SelectOption } from '@config/typings/types';
 
 interface SelectProps
   extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'onChange' | 'size'> {
@@ -126,9 +121,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
         </div>
 
         {error && (
-          <p className='mt-1 text-sm text-red-600 dark:text-red-400'>
-            {error}
-          </p>
+          <p className='mt-1 text-sm text-red-600 dark:text-red-400'>{error}</p>
         )}
 
         {helperText && !error && (

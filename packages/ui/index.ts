@@ -7,6 +7,7 @@ export { ThemeProvider, useTheme } from './components/ThemeProvider';
 export { ThemeToggle } from './components/ThemeToggle';
 export { ThemeDebug } from './components/ThemeDebug';
 export { ColorTest } from './components/ColorTest';
+export { ZustandProvider } from './components/ZustandProvider';
 
 // Typography components
 export {
@@ -25,6 +26,7 @@ export {
 export { Input } from './components/Input';
 export { Textarea } from './components/Textarea';
 export { Select } from './components/Select';
+export { MultiSelect } from './components/MultiSelect';
 export { Checkbox } from './components/Checkbox';
 export { Radio } from './components/Radio';
 
@@ -42,6 +44,7 @@ export { Accordion } from './components/Accordion';
 
 // Demo component
 export { ComponentDemo } from './components/ComponentDemo';
+export { ZustandDemo } from './components/ZustandDemo';
 
 // Frontend School Platform components
 export { CodeEditor } from './components/CodeEditor';

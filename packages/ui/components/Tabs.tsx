@@ -1,13 +1,7 @@
 'use client';
 
 import React, { ReactNode, useState } from 'react';
-
-interface Tab {
-  id: string;
-  label: ReactNode;
-  content: ReactNode;
-  disabled?: boolean;
-}
+import { Tab } from '@config/typings/types';
 
 interface TabsProps {
   tabs: Tab[];

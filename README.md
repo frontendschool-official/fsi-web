@@ -93,7 +93,17 @@ It also exports a Tailwind preset consumed by each app’s own `tailwind.config.
 
 ### `@fsi/eslint-config`
 
-Shared ESLint configuration extending Next.js core web vitals, recommended TypeScript rules and Prettier.
+Shared ESLint configuration extending Next.js core web vitals, recommended TypeScript rules and Prettier. Includes comprehensive duplicate code detection using SonarJS rules to maintain code quality and prevent code duplication.
+
+**Key Features:**
+
+- **Duplicate String Detection**: Flags strings duplicated 3+ times
+- **Identical Functions**: Detects functions with identical implementations
+- **Identical Expressions**: Finds repeated expressions that can be optimized
+- **Cognitive Complexity**: Limits function complexity for better readability
+- **Code Smells**: Detects various code quality issues and anti-patterns
+
+See `packages/eslint-config/DUPLICATE_CODE_RULES.md` for detailed documentation of all rules.
 
 ### `@fsi/tsconfig`
 
@@ -102,6 +112,87 @@ Base TypeScript configuration used by all packages and apps. Defines path aliase
 ## Continuous Integration
 
 The CI workflow defined in `.github/workflows/ci.yml` checks that the repository lints, typechecks and builds on every push and pull request. It uses Node 20 and pnpm to install dependencies.
+
+## State Management with Zustand
+
+The project uses **Zustand** for state management with the following stores:
+
+- **User Store** (`useUserStore`): Authentication state and user data
+- **UI Store** (`useUIStore`): Theme, sidebar, notifications, and global UI state
+- **Problem Store** (`useProblemStore`): Coding problems and problem-related state
+- **Progress Store** (`useProgressStore`): User progress tracking
+
+### Usage Guidelines
+
+1. **Use custom hooks**: Prefer the custom hooks from `@config/hooks` over directly accessing stores
+2. **Keep stores focused**: Each store should handle a specific domain
+3. **Handle loading states**: Always check loading states before rendering data
+4. **Use notifications**: Use the notification system for user feedback
+5. **Persist important data**: Use persistence for user preferences and progress
+
+### Example Usage
+
+```typescript
+import { useCurrentUser, useNotifications } from '@config/hooks';
+
+function MyComponent() {
+  const { user, isLoading } = useCurrentUser();
+  const { addNotification } = useNotifications();
+
+  const handleSuccess = () => {
+    addNotification({
+      type: 'success',
+      message: 'Operation completed!',
+    });
+  };
+
+  if (isLoading) return <div>Loading...</div>;
+
+  return <div>Welcome, {user?.email}</div>;
+}
+```
+
+## API Calls with HTTP Client
+
+All API calls should use the HTTP client from `@config/http`:
+
+```typescript
+import { httpClient } from '@config/http';
+
+// GET request
+const data = await httpClient.get('/api/problems');
+
+// POST request
+const result = await httpClient.post('/api/problems', {
+  title: 'New Problem',
+  difficulty: 'medium',
+});
+
+// PUT request
+await httpClient.put(`/api/problems/${id}`, updates);
+
+// DELETE request
+await httpClient.delete(`/api/problems/${id}`);
+```
+
+## File Size Guidelines
+
+- **Maximum file size**: 600 lines per file
+- **Split large files**: If a file exceeds 600 lines, split it into multiple files
+- **Organize by feature**: Group related functionality into separate files
+- **Use index files**: Export from index files to maintain clean imports
+
+### Example File Structure
+
+```
+components/
+├── ProblemList/
+│   ├── index.ts          # Main exports
+│   ├── ProblemList.tsx   # Main component
+│   ├── ProblemCard.tsx   # Sub-component
+│   ├── ProblemFilters.tsx # Filters component
+│   └── hooks.ts          # Custom hooks
+```
 
 ## Future Improvements
 

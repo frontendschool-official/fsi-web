@@ -5,20 +5,7 @@ import { Card } from './Card';
 import { Badge } from './Badge';
 import { Button } from './Button';
 import { Typography } from './Typography';
-
-interface Notification {
-  id: string;
-  type: 'success' | 'info' | 'warning' | 'error' | 'achievement';
-  title: string;
-  message: string;
-  timestamp: Date;
-  isRead: boolean;
-  action?: {
-    label: string;
-    onClick: () => void;
-  };
-  icon?: React.ReactNode;
-}
+import { Notification } from '@config/typings/types';
 
 interface NotificationCenterProps {
   notifications: Notification[];
@@ -196,10 +183,7 @@ export function NotificationCenter({
       {isOpen && (
         <>
           {/* Backdrop */}
-          <div
-            className='fixed inset-0 z-40'
-            onClick={toggleDropdown}
-          />
+          <div className='fixed inset-0 z-40' onClick={toggleDropdown} />
 
           {/* Dropdown Content */}
           <Card className='absolute right-0 mt-2 w-80 sm:w-96 z-50 shadow-xl border border-gray-200 dark:border-gray-700'>
@@ -224,8 +208,18 @@ export function NotificationCenter({
                     onClick={toggleDropdown}
                     className='p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'
                   >
-                    <svg className='w-4 h-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                      <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
+                    <svg
+                      className='w-4 h-4'
+                      fill='none'
+                      stroke='currentColor'
+                      viewBox='0 0 24 24'
+                    >
+                      <path
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        strokeWidth={2}
+                        d='M6 18L18 6M6 6l12 12'
+                      />
                     </svg>
                   </button>
                 </div>
@@ -237,7 +231,7 @@ export function NotificationCenter({
                 style={{ maxHeight }}
               >
                 {notifications?.length > 0 ? (
-                  notifications?.map((notification) => (
+                  notifications?.map(notification => (
                     <div
                       key={notification?.id}
                       className={`p-3 rounded-lg border-l-4 transition-colors ${
@@ -248,7 +242,8 @@ export function NotificationCenter({
                     >
                       <div className='flex items-start space-x-3'>
                         <div className='flex-shrink-0 mt-0.5'>
-                          {notification?.icon || getTypeIcon(notification?.type)}
+                          {notification?.icon ||
+                            getTypeIcon(notification?.type)}
                         </div>
                         <div className='flex-1 min-w-0'>
                           <div className='flex items-start justify-between'>
@@ -270,8 +265,18 @@ export function NotificationCenter({
                                 onClick={() => handleDelete(notification?.id)}
                                 className='p-1 text-gray-400 hover:text-red-500 transition-colors'
                               >
-                                <svg className='w-3 h-3' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                                  <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
+                                <svg
+                                  className='w-3 h-3'
+                                  fill='none'
+                                  stroke='currentColor'
+                                  viewBox='0 0 24 24'
+                                >
+                                  <path
+                                    strokeLinecap='round'
+                                    strokeLinejoin='round'
+                                    strokeWidth={2}
+                                    d='M6 18L18 6M6 6l12 12'
+                                  />
                                 </svg>
                               </button>
                             </div>
@@ -306,7 +311,10 @@ export function NotificationCenter({
                   ))
                 ) : (
                   <div className='text-center py-8'>
-                    <Typography variant='p' className='text-gray-500 dark:text-gray-400'>
+                    <Typography
+                      variant='p'
+                      className='text-gray-500 dark:text-gray-400'
+                    >
                       No notifications
                     </Typography>
                   </div>

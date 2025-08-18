@@ -5,25 +5,7 @@ import { Card } from './Card';
 import { Badge } from './Badge';
 import { Typography } from './Typography';
 import { Button } from './Button';
-
-interface TestCase {
-  id: string;
-  name: string;
-  status: 'passed' | 'failed' | 'error';
-  input: string;
-  expectedOutput: string;
-  actualOutput?: string;
-  executionTime?: number; // in milliseconds
-  memoryUsed?: number; // in MB
-}
-
-interface PerformanceMetrics {
-  totalExecutionTime: number;
-  averageExecutionTime: number;
-  memoryUsage: number;
-  timeComplexity?: string;
-  spaceComplexity?: string;
-}
+import { TestCase, PerformanceMetrics } from '@config/typings/types';
 
 interface TestResultsProps {
   testCases: TestCase[];
@@ -136,10 +118,16 @@ export function TestResults({
         {/* Summary Stats */}
         <div className='grid grid-cols-2 sm:grid-cols-4 gap-4'>
           <div className='text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg'>
-            <Typography variant='h4' className='text-green-600 dark:text-green-400'>
+            <Typography
+              variant='h4'
+              className='text-green-600 dark:text-green-400'
+            >
               {passedTests}
             </Typography>
-            <Typography variant='p' className='text-sm text-green-600 dark:text-green-400'>
+            <Typography
+              variant='p'
+              className='text-sm text-green-600 dark:text-green-400'
+            >
               Passed
             </Typography>
           </div>
@@ -147,23 +135,38 @@ export function TestResults({
             <Typography variant='h4' className='text-red-600 dark:text-red-400'>
               {failedTests}
             </Typography>
-            <Typography variant='p' className='text-sm text-red-600 dark:text-red-400'>
+            <Typography
+              variant='p'
+              className='text-sm text-red-600 dark:text-red-400'
+            >
               Failed
             </Typography>
           </div>
           <div className='text-center p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg'>
-            <Typography variant='h4' className='text-yellow-600 dark:text-yellow-400'>
+            <Typography
+              variant='h4'
+              className='text-yellow-600 dark:text-yellow-400'
+            >
               {errorTests}
             </Typography>
-            <Typography variant='p' className='text-sm text-yellow-600 dark:text-yellow-400'>
+            <Typography
+              variant='p'
+              className='text-sm text-yellow-600 dark:text-yellow-400'
+            >
               Errors
             </Typography>
           </div>
           <div className='text-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg'>
-            <Typography variant='h4' className='text-blue-600 dark:text-blue-400'>
+            <Typography
+              variant='h4'
+              className='text-blue-600 dark:text-blue-400'
+            >
               {performance?.totalExecutionTime?.toFixed(2) || '0'}ms
             </Typography>
-            <Typography variant='p' className='text-sm text-blue-600 dark:text-blue-400'>
+            <Typography
+              variant='p'
+              className='text-sm text-blue-600 dark:text-blue-400'
+            >
               Total Time
             </Typography>
           </div>
@@ -176,7 +179,10 @@ export function TestResults({
           </Typography>
           <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4'>
             <div className='p-3 bg-gray-50 dark:bg-gray-800 rounded-lg'>
-              <Typography variant='p' className='text-sm text-gray-600 dark:text-gray-400'>
+              <Typography
+                variant='p'
+                className='text-sm text-gray-600 dark:text-gray-400'
+              >
                 Average Time
               </Typography>
               <Typography variant='p' className='font-semibold'>
@@ -184,7 +190,10 @@ export function TestResults({
               </Typography>
             </div>
             <div className='p-3 bg-gray-50 dark:bg-gray-800 rounded-lg'>
-              <Typography variant='p' className='text-sm text-gray-600 dark:text-gray-400'>
+              <Typography
+                variant='p'
+                className='text-sm text-gray-600 dark:text-gray-400'
+              >
                 Memory Usage
               </Typography>
               <Typography variant='p' className='font-semibold'>
@@ -192,7 +201,10 @@ export function TestResults({
               </Typography>
             </div>
             <div className='p-3 bg-gray-50 dark:bg-gray-800 rounded-lg'>
-              <Typography variant='p' className='text-sm text-gray-600 dark:text-gray-400'>
+              <Typography
+                variant='p'
+                className='text-sm text-gray-600 dark:text-gray-400'
+              >
                 Time Complexity
               </Typography>
               <Typography variant='p' className='font-semibold'>
@@ -200,7 +212,10 @@ export function TestResults({
               </Typography>
             </div>
             <div className='p-3 bg-gray-50 dark:bg-gray-800 rounded-lg'>
-              <Typography variant='p' className='text-sm text-gray-600 dark:text-gray-400'>
+              <Typography
+                variant='p'
+                className='text-sm text-gray-600 dark:text-gray-400'
+              >
                 Space Complexity
               </Typography>
               <Typography variant='p' className='font-semibold'>
@@ -232,7 +247,10 @@ export function TestResults({
                     </Badge>
                   </div>
                   {testCase?.executionTime && (
-                    <Typography variant='p' className='text-sm text-gray-500 dark:text-gray-400'>
+                    <Typography
+                      variant='p'
+                      className='text-sm text-gray-500 dark:text-gray-400'
+                    >
                       {testCase.executionTime}ms
                     </Typography>
                   )}
@@ -240,7 +258,10 @@ export function TestResults({
 
                 <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm'>
                   <div>
-                    <Typography variant='p' className='font-medium text-gray-700 dark:text-gray-300 mb-1'>
+                    <Typography
+                      variant='p'
+                      className='font-medium text-gray-700 dark:text-gray-300 mb-1'
+                    >
                       Input
                     </Typography>
                     <pre className='bg-gray-50 dark:bg-gray-800 p-2 rounded text-xs overflow-x-auto'>
@@ -248,7 +269,10 @@ export function TestResults({
                     </pre>
                   </div>
                   <div>
-                    <Typography variant='p' className='font-medium text-gray-700 dark:text-gray-300 mb-1'>
+                    <Typography
+                      variant='p'
+                      className='font-medium text-gray-700 dark:text-gray-300 mb-1'
+                    >
                       Expected Output
                     </Typography>
                     <pre className='bg-gray-50 dark:bg-gray-800 p-2 rounded text-xs overflow-x-auto'>
@@ -259,7 +283,10 @@ export function TestResults({
 
                 {testCase?.actualOutput && (
                   <div className='mt-3'>
-                    <Typography variant='p' className='font-medium text-gray-700 dark:text-gray-300 mb-1'>
+                    <Typography
+                      variant='p'
+                      className='font-medium text-gray-700 dark:text-gray-300 mb-1'
+                    >
                       Actual Output
                     </Typography>
                     <pre className='bg-gray-50 dark:bg-gray-800 p-2 rounded text-xs overflow-x-auto'>
@@ -281,10 +308,7 @@ export function TestResults({
           >
             Retry Tests
           </Button>
-          <Button
-            onClick={onViewSolution}
-            className='flex-1 sm:flex-none'
-          >
+          <Button onClick={onViewSolution} className='flex-1 sm:flex-none'>
             View Solution
           </Button>
         </div>

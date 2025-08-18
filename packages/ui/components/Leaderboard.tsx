@@ -4,19 +4,7 @@ import React from 'react';
 import { Card } from './Card';
 import { Badge } from './Badge';
 import { Typography } from './Typography';
-
-interface LeaderboardEntry {
-  id: string;
-  rank: number;
-  username: string;
-  avatar?: string;
-  score: number;
-  problemsSolved: number;
-  streak: number;
-  isCurrentUser?: boolean;
-  badges?: string[];
-  lastActive?: string;
-}
+import { LeaderboardEntry } from '@config/typings/types';
 
 interface LeaderboardProps {
   entries: LeaderboardEntry[];
@@ -200,7 +188,8 @@ export function Leaderboard({
               variant='p'
               className='text-xs text-gray-500 dark:text-gray-400 text-center'
             >
-              Showing top {displayedEntries.length} of {entries?.length || 0} participants
+              Showing top {displayedEntries.length} of {entries?.length || 0}{' '}
+              participants
             </Typography>
           </div>
         )}

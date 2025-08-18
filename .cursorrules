@@ -1,45 +1,59 @@
 # Cursor Rules for fsi-web
 
 ## Project Overview
+
 - Monorepo name: **fsi-web**
 - Apps: **apps/admin**, **apps/consumer** (Next.js 14 App Router)
 - Shared packages: **packages/config**, **packages/ui**, **packages/eslint-config**, **packages/tsconfig**
 - Styling: TailwindCSS in both apps + shared preset in `@fsi/ui`
 - Auth & DB: Firebase Web SDK v10 (Google Sign-In, Firestore)
+- State Management: **Zustand** with custom hooks in `@config/hooks`
+- HTTP Client: **Axios** wrapper in `@config/http`
 - Package manager: **pnpm** (fallback: npm/yarn)
 - Task runner: **Turborepo**
 
 ## Hard Constraints (do not violate)
-1) Keep Firebase **client-only** (no Admin SDK or private keys).
-2) Do not introduce server secrets; only `NEXT_PUBLIC_*` values.
-3) Shared config must live in `packages/config` and be imported via `@config/*`.
-4) Shared UI must live in `packages/ui` and be imported via `@fsi/ui`.
-5) Admin-only surfaces must check `isAdmin(email)` (allowlist env).
-6) Keep code **TypeScript strict** and pass `pnpm lint && pnpm typecheck && pnpm build`.
+
+1. Keep Firebase **client-only** (no Admin SDK or private keys).
+2. Do not introduce server secrets; only `NEXT_PUBLIC_*` values.
+3. Shared config must live in `packages/config` and be imported via `@config/*`.
+4. Shared UI must live in `packages/ui` and be imported via `@fsi/ui`.
+5. Admin-only surfaces must check `isAdmin(email)` (allowlist env).
+6. Keep code **TypeScript strict** and pass `pnpm lint && pnpm typecheck && pnpm build`.
+7. **Maximum file size**: 600 lines per file - split into multiple files if exceeded.
+8. **All API calls** must use `httpClient` from `@config/http`.
+9. **All state management** must use Zustand stores and custom hooks from `@config/hooks`.
+10. **Mandatory optional chaining**: Use `?.` operator everywhere when accessing potentially undefined properties or calling potentially undefined methods.
 
 ## File/Module Boundaries
-- `packages/config`: `env.ts`, `firebase.ts`, `auth.ts`, `db.ts` are the **single sources of truth** for env, Firebase init, auth helpers, Firestore helpers.
+
+- `packages/config`: `env.ts`, `firebase.ts`, `auth.ts`, `db.ts`, `stores.ts`, `hooks.ts`, `http.ts` are the **single sources of truth** for env, Firebase init, auth helpers, Firestore helpers, state management, and HTTP client.
 - `packages/ui`: Presentational components only; may call `useUser()`/`isAdmin()` for gating via `AuthGate`.
-- Apps **must not** re-initialize Firebase or re-parse env.
+- Apps **must not** re-initialize Firebase, re-parse env, or create their own state management.
 
 ## Code Style & Tooling
+
 - ESLint: extend `next/core-web-vitals`, `eslint:recommended`, `@typescript-eslint/recommended`, `prettier`.
 - TSConfig: use `packages/tsconfig/base.json` with strict options.
 - Pre-commit: run `lint-staged` with eslint+prettier.
 - CI: Node 20, `pnpm i`, run `lint`, `typecheck`, `build`.
+- **Optional Chaining**: Always use `?.` operator for safe property access and method calls.
 
 ## UI/UX Conventions
+
 - Use Tailwind utility classes; keep components minimal and reusable.
 - No third-party UI kits without explicit approval.
 
 ## Auth Flow (v1)
+
 - `signInWithPopup(GoogleAuthProvider)`.
 - On login: `ensureUserDocument(user)`.
 - `AuthGate`:
-  - If `adminOnly`, redirect to `/auth` when not signed in OR show “Access Denied” for non-allowlisted users.
+  - If `adminOnly`, redirect to `/auth` when not signed in OR show "Access Denied" for non-allowlisted users.
   - Else, redirect unauthenticated to `/auth`.
 
 ## Acceptance Checklist (Cursor must keep green)
+
 - `pnpm i` at root installs.
 - `pnpm dev` runs consumer:3000 + admin:3001.
 - `/auth` works; first sign-in creates `users/{uid}`.
@@ -47,15 +61,49 @@
 - `pnpm lint && pnpm typecheck && pnpm build` succeed.
 
 ## Dependency Policy
-- Allowed: next@14, react@18, firebase@^10, zod, tailwindcss, autoprefixer, eslint, prettier, husky, lint-staged.
+
+- Allowed: next@14, react@18, firebase@^10, zod, tailwindcss, autoprefixer, eslint, prettier, husky, lint-staged, zustand@^4, axios@^1, react-firebase-hooks@^5.
 - Ask before adding anything else.
 
 ## Commits
+
 - Conventional commits (e.g., `feat(admin): add companies placeholder cards`)
 - Keep PRs small and focused.
 
-## Do / Don’t
+## State Management Guidelines
+
+- ✅ Use Zustand stores from `@config/stores`
+- ✅ Use custom hooks from `@config/hooks`
+- ✅ Handle loading states and errors properly
+- ✅ Use notifications for user feedback
+- ❌ Don't create local state when global state is needed
+- ❌ Don't duplicate state management logic
+
+## API Call Guidelines
+
+- ✅ Use `httpClient` from `@config/http` for all API calls
+- ✅ Handle errors and loading states
+- ✅ Use proper HTTP methods (GET, POST, PUT, DELETE)
+- ❌ Don't use fetch or axios directly
+- ❌ Don't create custom HTTP clients
+
+## File Organization Guidelines
+
+- ✅ Keep files under 600 lines
+- ✅ Split large files into multiple focused files
+- ✅ Use index files for clean exports
+- ✅ Organize by feature/domain
+- ❌ Don't create monolithic files
+- ❌ Don't mix unrelated functionality
+
+## Do / Don't
+
 - ✅ Reuse helpers from `@config/*`
 - ✅ Put new shared UI in `packages/ui`
-- ❌ Don’t duplicate env parsing or Firebase init
-- ❌ Don’t add server-only keys
+- ✅ Use Zustand for state management
+- ✅ Use httpClient for API calls
+- ✅ Use optional chaining (`?.`) for safe property access
+- ❌ Don't duplicate env parsing or Firebase init
+- ❌ Don't add server-only keys
+- ❌ Don't exceed 600 lines per file
+- ❌ Don't access properties without optional chaining when they might be undefined
