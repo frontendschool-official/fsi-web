@@ -32,6 +32,9 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
+    "@codesandbox/sandpack-react": "^2.20.0",
+    "@excalidraw/excalidraw": "^0.18.0",
+    "@monaco-editor/react": "^4.7.0",
     "autoprefixer": "^10.4.14",
     "axios": "^1.11.0",
     "firebase": "^10.6.0",

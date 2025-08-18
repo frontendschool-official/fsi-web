@@ -54,3 +54,21 @@ export { Sidebar } from './components/Sidebar';
 export { TestResults } from './components/TestResults';
 export { Leaderboard } from './components/Leaderboard';
 export { NotificationCenter } from './components/NotificationCenter';
+
+// Editor components
+export { DSAEditor } from './components/DSAEditor';
+export {
+  MachineCodingEditor,
+  MachineCodingTemplates,
+} from './components/MachineCodingEditor';
+export {
+  SystemDesignEditor,
+  SystemDesignTemplates,
+} from './components/SystemDesignEditor';
+export { SystemDesignEditorSimple } from './components/SystemDesignEditorSimple';
+export { ExcalidrawMinimalWrapper } from './components/ExcalidrawMinimal';
+export { ExcalidrawDebug } from './components/ExcalidrawDebug';
+export { TheoryEditor, TheoryTemplates } from './components/TheoryEditor';
+
+// Icons
+export * from './icons';
