@@ -1,52 +1,73 @@
-import { Card, Button, ThemeToggle } from '@fsi/ui';
+'use client';
+import { Card, Button, H2, H1, P, LoadingSpinner } from '@fsi/ui';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { httpClient } from '@fsi/config/http';
 
 export default function AdminDashboard() {
+  const [stats, setStats] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const response = await httpClient.get('/api/companies/stats');
+        setStats(response.data);
+      } catch (error) {
+        console.error('Failed to fetch stats:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStats();
+  }, []);
+
   return (
     <div className='space-y-8'>
       {/* Header */}
-      <div className='flex justify-between items-center'>
-        <div>
-          <h1 className='text-3xl font-bold text-gray-900 dark:text-gray-100'>
-            Admin Dashboard
-          </h1>
-          <p className='text-gray-600 dark:text-gray-300'>
-            Manage your Frontend School platform
-          </p>
-        </div>
-        <ThemeToggle />
-      </div>
+      <H1>Admin Dashboard</H1>
+      <P>Manage your Frontend School platform</P>
 
       {/* Stats Grid */}
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
         <Card>
           <div className='text-center'>
-            <div className='text-2xl font-bold text-primary-500'>1,234</div>
+            <div className='text-2xl font-bold text-primary-500'>
+              {loading ? '...' : stats?.total || 0}
+            </div>
             <div className='text-sm text-gray-600 dark:text-gray-300'>
-              Total Students
+              Total Companies
             </div>
           </div>
         </Card>
         <Card>
           <div className='text-center'>
-            <div className='text-2xl font-bold text-primary-500'>56</div>
+            <div className='text-2xl font-bold text-primary-500'>
+              {loading ? '...' : stats?.byCountry?.India || 0}
+            </div>
             <div className='text-sm text-gray-600 dark:text-gray-300'>
-              Active Courses
+              Indian Companies
             </div>
           </div>
         </Card>
         <Card>
           <div className='text-center'>
-            <div className='text-2xl font-bold text-primary-500'>89%</div>
+            <div className='text-2xl font-bold text-primary-500'>
+              {loading ? '...' : stats?.byCountry?.Global || 0}
+            </div>
             <div className='text-sm text-gray-600 dark:text-gray-300'>
-              Completion Rate
+              Global Companies
             </div>
           </div>
         </Card>
         <Card>
           <div className='text-center'>
-            <div className='text-2xl font-bold text-primary-500'>$12.5K</div>
+            <div className='text-2xl font-bold text-primary-500'>
+              {loading ? '...' : stats?.byStatus?.active || 0}
+            </div>
             <div className='text-sm text-gray-600 dark:text-gray-300'>
-              Monthly Revenue
+              Active Companies
             </div>
           </div>
         </Card>
@@ -54,82 +75,54 @@ export default function AdminDashboard() {
 
       {/* Quick Actions */}
       <Card>
-        <h2 className='text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4'>
-          Quick Actions
-        </h2>
+        <H2>Quick Actions</H2>
         <div className='flex flex-wrap gap-4'>
-          <Button>Add New Course</Button>
+          <Link href='/companies'>
+            <Button>Manage Companies</Button>
+          </Link>
           <Button variant='secondary'>Manage Users</Button>
           <Button variant='outline'>View Analytics</Button>
           <Button variant='ghost'>Settings</Button>
         </div>
       </Card>
 
-      {/* Recent Activity */}
+      {/* Recent Companies */}
       <Card>
-        <h2 className='text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4'>
-          Recent Activity
-        </h2>
+        <H2>Recent Companies</H2>
         <div className='space-y-3'>
-          {[
-            {
-              action: 'New student enrolled',
-              time: '2 minutes ago',
-              user: 'john@example.com',
-            },
-            {
-              action: 'Course completed',
-              time: '15 minutes ago',
-              user: 'sarah@example.com',
-            },
-            {
-              action: 'Payment received',
-              time: '1 hour ago',
-              user: 'mike@example.com',
-            },
-            {
-              action: 'New course published',
-              time: '2 hours ago',
-              user: 'admin@frontendschool.com',
-            },
-          ].map((item, index) => (
-            <div
-              key={index}
-              className='flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-700 last:border-b-0'
-            >
-              <div>
-                <div className='text-gray-900 dark:text-gray-100 font-medium'>
-                  {item.action}
+          {loading ? (
+            <LoadingSpinner size='sm' />
+          ) : stats?.recentCompanies?.length > 0 ? (
+            stats.recentCompanies.map((company: any, index: number) => (
+              <div
+                key={index}
+                className='flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-700 last:border-b-0'
+              >
+                <div>
+                  <div className='text-gray-900 dark:text-gray-100 font-medium'>
+                    {company.name}
+                  </div>
+                  <div className='text-sm text-gray-600 dark:text-gray-300'>
+                    {company.country} •{' '}
+                    {new Date(company.createdAt).toLocaleDateString()}
+                  </div>
                 </div>
-                <div className='text-sm text-gray-600 dark:text-gray-300'>
-                  {item.user}
-                </div>
+                <Link
+                  href={`/companies/${company.name
+                    .toLowerCase()
+                    .replace(/\s+/g, '-')}`}
+                >
+                  <Button size='sm' variant='outline'>
+                    View
+                  </Button>
+                </Link>
               </div>
-              <div className='text-sm text-gray-500 dark:text-gray-400'>
-                {item.time}
-              </div>
+            ))
+          ) : (
+            <div className='text-center py-4 text-gray-500'>
+              No companies found
             </div>
-          ))}
-        </div>
-      </Card>
-
-      {/* Theme Information */}
-      <Card>
-        <h2 className='text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4'>
-          Theme System
-        </h2>
-        <div className='space-y-4'>
-          <p className='text-gray-600 dark:text-gray-300'>
-            This admin dashboard showcases the new theme system with the primary
-            color #04AA6D. The theme automatically adapts to light and dark
-            modes with smooth transitions.
-          </p>
-          <div className='flex items-center space-x-4'>
-            <div className='w-8 h-8 rounded-full bg-primary-500'></div>
-            <span className='text-sm text-gray-600 dark:text-gray-300'>
-              Primary Color: #04AA6D
-            </span>
-          </div>
+          )}
         </div>
       </Card>
     </div>

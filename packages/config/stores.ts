@@ -2,6 +2,10 @@ import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 import { User } from 'firebase/auth';
 import { ensureUserDocument } from './db';
+import { useCompaniesStore } from './stores/companies.store';
+import { useDesignationsStore } from './stores/designations.store';
+import { useInterviewRoundsStore } from './stores/interview-rounds.store';
+import { RoundType } from './typings/companies.types';
 
 // User store for authentication state
 interface UserState {
@@ -111,7 +115,7 @@ interface Problem {
   title: string;
   description: string;
   difficulty: 'easy' | 'medium' | 'hard';
-  category: 'dsa' | 'machine_coding' | 'system_design';
+  category: RoundType;
   tags: string[];
   createdAt: Date;
   updatedAt: Date;
@@ -235,3 +239,6 @@ export type {
   Problem,
   UserProgress,
 };
+
+// Export stores
+export { useCompaniesStore, useDesignationsStore, useInterviewRoundsStore };

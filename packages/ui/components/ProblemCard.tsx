@@ -5,13 +5,15 @@ import { Card } from './Card';
 import { Badge } from './Badge';
 import { Button } from './Button';
 import { Typography } from './Typography';
+import { RoundType } from '../../config/typings/companies.types';
+import { ProblemDifficulty } from '../../config/typings/types';
 
 interface ProblemCardProps {
   id: string;
   title: string;
   description: string;
-  difficulty: 'easy' | 'medium' | 'hard';
-  category: 'dsa' | 'machine-coding' | 'system-design';
+  difficulty: ProblemDifficulty;
+  category: RoundType;
   tags: string[];
   estimatedTime?: number; // in minutes
   isCompleted?: boolean;
@@ -43,17 +45,35 @@ export function ProblemCard({
   };
 
   const categoryColors = {
-    dsa: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300',
-    'machine-coding':
+    DSA: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300',
+    MachineCoding:
       'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300',
-    'system-design':
+    SystemDesign:
+      'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300',
+    FrontendCore:
+      'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
+    Behavioral:
+      'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300',
+    BarRaiser:
+      'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300',
+    HiringManager:
+      'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300',
+    CodingPair:
+      'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300',
+    TakeHome:
       'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300',
   };
 
   const categoryLabels = {
-    dsa: 'DSA',
-    'machine-coding': 'Machine Coding',
-    'system-design': 'System Design',
+    DSA: 'DSA',
+    MachineCoding: 'Machine Coding',
+    SystemDesign: 'System Design',
+    FrontendCore: 'Frontend Core',
+    Behavioral: 'Behavioral',
+    BarRaiser: 'Bar Raiser',
+    HiringManager: 'Hiring Manager',
+    CodingPair: 'Coding Pair',
+    TakeHome: 'Take Home',
   };
 
   return (
@@ -66,12 +86,16 @@ export function ProblemCard({
           <div className='flex-1 min-w-0'>
             <div className='flex flex-wrap items-center gap-1 sm:gap-2 mb-2'>
               <Badge
-                className={`${categoryColors[category]} text-xs px-2 py-1`}
+                className={`${
+                  categoryColors?.[category] ?? ''
+                } text-xs px-2 py-1`}
               >
-                {categoryLabels[category]}
+                {categoryLabels?.[category] ?? category}
               </Badge>
               <Badge
-                className={`${difficultyColors[difficulty]} text-xs px-2 py-1`}
+                className={`${
+                  difficultyColors?.[difficulty] ?? ''
+                } text-xs px-2 py-1`}
               >
                 {difficulty?.charAt(0)?.toUpperCase() + difficulty?.slice(1)}
               </Badge>

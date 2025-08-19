@@ -61,7 +61,7 @@ console.log(fibonacci(10));`;
       description:
         'Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.',
       difficulty: 'easy' as const,
-      category: 'dsa' as const,
+      category: 'DSA' as const,
       tags: ['Array', 'Hash Table'],
       estimatedTime: 15,
       isCompleted: false,
@@ -73,7 +73,7 @@ console.log(fibonacci(10));`;
       description:
         'Create a fully functional todo application with add, edit, delete, and mark as complete functionality.',
       difficulty: 'medium' as const,
-      category: 'machine-coding' as const,
+      category: 'MachineCoding' as const,
       tags: ['React', 'State Management', 'CRUD'],
       estimatedTime: 45,
       isCompleted: true,
@@ -83,19 +83,19 @@ console.log(fibonacci(10));`;
 
   const demoProgress = [
     {
-      category: 'dsa' as const,
+      category: 'DSA' as const,
       completed: 15,
       total: 50,
       streak: 7,
     },
     {
-      category: 'machine-coding' as const,
+      category: 'MachineCoding' as const,
       completed: 8,
       total: 25,
       streak: 3,
     },
     {
-      category: 'system-design' as const,
+      category: 'SystemDesign' as const,
       completed: 3,
       total: 20,
       streak: 1,

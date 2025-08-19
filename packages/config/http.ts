@@ -36,7 +36,7 @@ function requestToCurl(config: AxiosRequestConfig): string {
 export function createHttpClient(baseURL?: string): AxiosInstance {
   const instance = axios.create({
     baseURL,
-    timeout: 10000,
+    timeout: 50000,
     headers: {
       'Content-Type': 'application/json',
     },

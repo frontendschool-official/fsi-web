@@ -1,3 +1,4 @@
+import { RoundType } from './companies.types';
 // Shared types and interfaces for the fsi-web monorepo
 
 // ============================================================================
@@ -44,7 +45,7 @@ export type ProblemDifficulty = 'easy' | 'medium' | 'hard';
 /**
  * Problem categories
  */
-export type ProblemCategory = 'dsa' | 'machine_coding' | 'system_design';
+export type ProblemCategory = RoundType;
 
 // ============================================================================
 // UI Types
@@ -177,7 +178,7 @@ export interface ProgressData {
  * Category progress data for tracking
  */
 export interface CategoryProgressData {
-  category: 'dsa' | 'machine-coding' | 'system-design';
+  category: RoundType;
   completed: number;
   total: number;
   streak?: number;

@@ -19,6 +19,7 @@ const clientSchema = z.object({
     .default('1:123456789:web:abcdef123456'),
   NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID: z.string().optional(),
   NEXT_PUBLIC_ADMIN_ALLOWLIST: z.string().default(''),
+  GEMINI_API_KEY: z.string().optional(),
 });
 
 /**
@@ -38,6 +39,7 @@ export const env = clientSchema.parse({
   NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID:
     process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
   NEXT_PUBLIC_ADMIN_ALLOWLIST: process.env.NEXT_PUBLIC_ADMIN_ALLOWLIST,
+  GEMINI_API_KEY: process.env.GEMINI_API_KEY,
 });
 
 /**
