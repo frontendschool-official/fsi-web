@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { InterviewRound } from '../typings/companies.types';
+import { InterviewRound } from '../types/companies';
 import {
   getInterviewRounds,
   getInterviewRound,

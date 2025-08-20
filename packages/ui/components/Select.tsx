@@ -1,7 +1,7 @@
 'use client';
 
 import React, { forwardRef, SelectHTMLAttributes } from 'react';
-import { SelectOption } from '@config/typings/types';
+import { SelectOption } from '@config/types/types';
 
 interface SelectProps
   extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'onChange' | 'size'> {

@@ -7,7 +7,7 @@ import React, {
   useEffect,
   useCallback,
 } from 'react';
-import { SelectOption } from '@config/typings/types';
+import { SelectOption } from '@config/types/types';
 
 interface MultiSelectProps {
   label?: string;

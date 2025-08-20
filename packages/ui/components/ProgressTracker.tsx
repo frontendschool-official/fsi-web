@@ -5,7 +5,7 @@ import { Card } from './Card';
 import { Progress } from './Progress';
 import { Typography } from './Typography';
 import { Badge } from './Badge';
-import { CategoryProgressData } from '@config/typings/types';
+import { CategoryProgressData } from '@config/types/types';
 
 interface ProgressTrackerProps {
   progress: CategoryProgressData[];

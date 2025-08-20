@@ -5,7 +5,7 @@ import { Card } from './Card';
 import { Badge } from './Badge';
 import { Button } from './Button';
 import { Typography } from './Typography';
-import { Notification } from '@config/typings/types';
+import { Notification } from '@config/types/types';
 
 interface NotificationCenterProps {
   notifications: Notification[];

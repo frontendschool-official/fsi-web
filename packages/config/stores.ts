@@ -5,7 +5,7 @@ import { ensureUserDocument } from './db';
 import { useCompaniesStore } from './stores/companies.store';
 import { useDesignationsStore } from './stores/designations.store';
 import { useInterviewRoundsStore } from './stores/interview-rounds.store';
-import { RoundType } from './typings/companies.types';
+import { RoundType } from './types/companies';
 
 // User store for authentication state
 interface UserState {

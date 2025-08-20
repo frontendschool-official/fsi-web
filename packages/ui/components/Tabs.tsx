@@ -1,7 +1,7 @@
 'use client';
 
 import React, { ReactNode, useState } from 'react';
-import { Tab } from '@config/typings/types';
+import { Tab } from '@config/types/types';
 
 interface TabsProps {
   tabs: Tab[];

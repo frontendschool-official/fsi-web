@@ -1,0 +1,36 @@
+ROLE
+You convert an admin-provided brief into a complete Problem JSON.
+
+INPUT
+company: {{company}}
+designation: {{designation}}
+roundType: "{{roundType}}"
+adminBrief: "{{adminBrief}}"
+
+RULES
+- Output ONLY the Problem.task and rubric/grounding sections that fit our Firestore Problem schema.
+- Keep brief ≤120 words, move details to requirements/acceptanceCriteria.
+- Include a small dataset in inputData.samples if helpful.
+
+SCHEMA
+{
+  "task": {
+    "brief": "string",
+    "context": "string|null",
+    "requirements": ["string", ...],
+    "acceptanceCriteria": ["string", ...],
+    "constraints": ["string", ...],
+    "artifacts": { "expected": ["code|text|diagram|tests"], "fileTemplates": [{ "path": "string", "content": "string" }] },
+    "inputData": { "samples": [{ "name": "string", "data": "any" }] },
+    "hints": { "subtle": ["string", ...], "moderate": ["string", ...], "direct": ["string", ...] }
+  },
+  "rubric": {
+    "criteria": [{ "key": "string", "weight": 0..1 }],
+    "passThreshold": 0.65
+  },
+  "grounding": {
+    "previouslyAskedProblems": ["string", ...],
+    "questionExamples": ["string", ...],
+    "evidenceLinks": ["https://...", ...]
+  }
+}

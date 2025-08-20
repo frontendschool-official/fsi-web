@@ -5,8 +5,8 @@ import { Card } from './Card';
 import { Badge } from './Badge';
 import { Button } from './Button';
 import { Typography } from './Typography';
-import { RoundType } from '../../config/typings/companies.types';
-import { ProblemDifficulty } from '../../config/typings/types';
+import { RoundType } from '../../config/types/companies';
+import { ProblemDifficulty } from '../../config/types/common';
 
 interface ProblemCardProps {
   id: string;

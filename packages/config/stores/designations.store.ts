@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { Designation } from '../typings/companies.types';
+import { Designation } from '../types/companies';
 import {
   getDesignations,
   getDesignation,

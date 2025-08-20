@@ -4,7 +4,7 @@ import React from 'react';
 import { Card } from './Card';
 import { Badge } from './Badge';
 import { Typography } from './Typography';
-import { LeaderboardEntry } from '@config/typings/types';
+import { LeaderboardEntry } from '@config/types/types';
 
 interface LeaderboardProps {
   entries: LeaderboardEntry[];

@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Button } from './Button';
 import { ThemeToggle } from './ThemeToggle';
 import { Typography } from './Typography';
-import { NavigationItem } from '@config/typings/types';
+import { NavigationItem } from '@config/types/types';
 
 interface HeaderProps {
   navigationItems?: NavigationItem[];

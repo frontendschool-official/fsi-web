@@ -5,7 +5,7 @@ import { Card } from './Card';
 import { Badge } from './Badge';
 import { Typography } from './Typography';
 import { Button } from './Button';
-import { TestCase, PerformanceMetrics } from '@config/typings/types';
+import { TestCase, PerformanceMetrics } from '@config/types/types';
 
 interface TestResultsProps {
   testCases: TestCase[];

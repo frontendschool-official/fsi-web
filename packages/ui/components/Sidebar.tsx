@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Typography } from './Typography';
-import { SidebarItem, SidebarSection } from '@config/typings/types';
+import { SidebarItem, SidebarSection } from '@config/types/types';
 
 interface SidebarProps {
   sections: SidebarSection[];

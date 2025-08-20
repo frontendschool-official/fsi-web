@@ -1,4 +1,4 @@
-import { RoundType } from './companies.types';
+import { RoundType } from './companies';
 // Shared types and interfaces for the fsi-web monorepo
 
 // ============================================================================
